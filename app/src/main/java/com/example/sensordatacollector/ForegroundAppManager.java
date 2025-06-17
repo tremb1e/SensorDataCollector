@@ -144,7 +144,7 @@ public class ForegroundAppManager implements ComponentCallbacks2 {
         }
         
         if (!hasUsageStatsPermission()) {
-            return new ForegroundAppInfo("需要使用统计权限", "");
+            return new ForegroundAppInfo(context.getString(R.string.need_usage_stats_permission), "");
         }
         
         try {
@@ -227,7 +227,7 @@ public class ForegroundAppManager implements ComponentCallbacks2 {
                 String packageName = entry.getKey();
                 String appName = getApplicationNameFromPackage(packageName);
                 if (!appName.equals("未知应用") && !appName.equals(packageName)) {
-                    apps.add(new RecentAppInfo(appName, packageName, entry.getValue()));
+                    apps.add(new RecentAppInfo(this.context, appName, packageName, entry.getValue()));
                 }
             }
             
@@ -256,11 +256,11 @@ public class ForegroundAppManager implements ComponentCallbacks2 {
         long currentTime = System.currentTimeMillis();
         
         // 添加当前应用
-        apps.add(new RecentAppInfo("传感器数据收集器", context.getPackageName(), currentTime));
+        apps.add(new RecentAppInfo(this.context, this.context.getString(R.string.sensor_data_collector_app), this.context.getPackageName(), currentTime));
         
         // 如果有上次检测到的前台应用，也加入
-        if (!lastForegroundPackage.isEmpty() && !lastForegroundPackage.equals(context.getPackageName())) {
-            apps.add(new RecentAppInfo(lastForegroundAppName, lastForegroundPackage, currentTime - 60000));
+        if (!lastForegroundPackage.isEmpty() && !lastForegroundPackage.equals(this.context.getPackageName())) {
+            apps.add(new RecentAppInfo(this.context, lastForegroundAppName, lastForegroundPackage, currentTime - 60000));
         }
         
         return apps.subList(0, Math.min(limit, apps.size()));
@@ -290,14 +290,14 @@ public class ForegroundAppManager implements ComponentCallbacks2 {
     private String getForegroundPackageName() {
         if (usageStatsManager == null) {
             Log.w(TAG, "UsageStatsManager不可用");
-            return "未知应用";
+            return context.getString(R.string.unknown_app);
         }
 
         try {
             // 检查权限
             if (!hasUsageStatsPermission()) {
                 Log.w(TAG, "没有使用统计权限");
-                return "未知应用(权限不足)";
+                return context.getString(R.string.unknown_app) + "(权限不足)";
             }
 
             long endTime = System.currentTimeMillis();
@@ -309,14 +309,14 @@ public class ForegroundAppManager implements ComponentCallbacks2 {
                 usageEvents = usageStatsManager.queryEvents(startTime, endTime);
             } catch (SecurityException e) {
                 Log.w(TAG, "查询使用事件时权限不足", e);
-                return "未知应用(安全异常)";
+                return context.getString(R.string.unknown_app) + "(安全异常)";
             } catch (Exception e) {
                 Log.w(TAG, "查询使用事件失败", e);
-                return "未知应用(查询失败)";
+                return context.getString(R.string.unknown_app) + "(查询失败)";
             }
             
             if (usageEvents == null) {
-                return lastForegroundPackage.isEmpty() ? "未知应用" : lastForegroundPackage;
+                return lastForegroundPackage.isEmpty() ? context.getString(R.string.unknown_app) : lastForegroundPackage;
             }
 
             // 收集最近的事件
@@ -355,14 +355,14 @@ public class ForegroundAppManager implements ComponentCallbacks2 {
                 return currentForegroundPackage;
             }
             
-            return lastForegroundPackage.isEmpty() ? "未知应用" : lastForegroundPackage;
+            return lastForegroundPackage.isEmpty() ? context.getString(R.string.unknown_app) : lastForegroundPackage;
             
         } catch (SecurityException e) {
             Log.w(TAG, "获取前台应用时权限不足", e);
-            return "未知应用(权限异常)";
+            return context.getString(R.string.unknown_app) + "(权限异常)";
         } catch (Exception e) {
             Log.e(TAG, "获取前台应用信息时发生未知异常", e);
-            return "未知应用(异常)";
+            return context.getString(R.string.unknown_app) + "(异常)";
         }
     }
     
@@ -372,7 +372,7 @@ public class ForegroundAppManager implements ComponentCallbacks2 {
      */
     private String getApplicationNameFromPackage(String packageName) {
         if (packageName == null || packageName.isEmpty()) {
-            return "未知应用";
+            return context.getString(R.string.unknown_app);
         }
         
         // 检查缓存
@@ -436,7 +436,7 @@ public class ForegroundAppManager implements ComponentCallbacks2 {
             
             String fallbackName = packageName;
             if (packageName.startsWith("android") || packageName.startsWith("com.android")) {
-                fallbackName = "系统应用";
+                fallbackName = context.getString(R.string.system_app);
             }
             
             packageNameToAppNameMap.put(packageName, fallbackName);
@@ -492,8 +492,10 @@ public class ForegroundAppManager implements ComponentCallbacks2 {
         private String appName;
         private String packageName;
         private long lastUsedTime;
+        private Context context; // Added context field
         
-        public RecentAppInfo(String appName, String packageName, long lastUsedTime) {
+        public RecentAppInfo(Context context, String appName, String packageName, long lastUsedTime) { // Added context parameter
+            this.context = context;
             this.appName = appName;
             this.packageName = packageName;
             this.lastUsedTime = lastUsedTime;
@@ -524,13 +526,13 @@ public class ForegroundAppManager implements ComponentCallbacks2 {
             long diffMinutes = (currentTime - timeMillis) / (60 * 1000);
             
             if (diffMinutes < 1) {
-                return "刚刚";
+                return this.context.getString(R.string.time_ago_just_now); // Use this.context
             } else if (diffMinutes < 60) {
-                return diffMinutes + "分钟前";
+                return this.context.getString(R.string.time_ago_minutes, (int)diffMinutes); // Use this.context
             } else if (diffMinutes < 24 * 60) {
-                return (diffMinutes / 60) + "小时前";
+                return this.context.getString(R.string.time_ago_hours, (int)(diffMinutes / 60)); // Use this.context
             } else {
-                return (diffMinutes / (24 * 60)) + "天前";
+                return this.context.getString(R.string.time_ago_days, (int)(diffMinutes / (24 * 60))); // Use this.context
             }
         }
     }
@@ -666,4 +668,4 @@ public class ForegroundAppManager implements ComponentCallbacks2 {
         
         Log.d(TAG, "ForegroundAppManager 已关闭");
     }
-} 
+}

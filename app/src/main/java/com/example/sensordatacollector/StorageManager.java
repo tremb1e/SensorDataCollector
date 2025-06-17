@@ -808,7 +808,7 @@ public class StorageManager implements DataManager.DataRecordListener, Component
      */
     public String getLastUploadTimeString() {
         if (lastUploadTimestamp == 0) {
-            return "从未上传";
+            return context.getString(R.string.never_uploaded);
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         return sdf.format(new Date(lastUploadTimestamp));

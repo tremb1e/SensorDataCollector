@@ -7,17 +7,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.BatteryManager;
-import android.os.Build;
-import android.os.Debug;
-import android.os.Process;
-import android.os.SystemClock;
-import android.util.Log;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -60,7 +53,7 @@ public class BatteryStatsManager implements ComponentCallbacks2 {
         // 注册内存回调
         if (this.context != null) {
             this.context.registerComponentCallbacks(this);
-            Log.d(TAG, "注册了内存回调");
+            Log.d(TAG, context.getString(R.string.log_memory_callback_registered));
         }
     }
 
@@ -113,9 +106,9 @@ public class BatteryStatsManager implements ComponentCallbacks2 {
                 STATS_INTERVAL_SECONDS, 
                 TimeUnit.SECONDS
             );
-            Log.d(TAG, "电池统计监控已启动");
+            Log.d(TAG, context.getString(R.string.log_battery_stats_monitoring_started));
         } catch (Exception e) {
-            Log.e(TAG, "启动电池统计监控失败", e);
+            Log.e(TAG, context.getString(R.string.log_error_starting_battery_stats_monitoring), e);
         }
     }
     
@@ -133,7 +126,7 @@ public class BatteryStatsManager implements ComponentCallbacks2 {
             // 安全地更新性能统计，避免访问可能导致权限问题的系统服务
             updatePerformanceStatsSafely();
         } catch (Exception e) {
-            Log.w(TAG, "更新统计数据时出错", e);
+            Log.w(TAG, context.getString(R.string.log_error_updating_stats), e);
         }
     }
     
@@ -149,11 +142,11 @@ public class BatteryStatsManager implements ComponentCallbacks2 {
             currentCpuUsage = 0; // 重置为0，表示不可用
             
         } catch (SecurityException e) {
-            Log.w(TAG, "访问性能数据时权限不足", e);
+            Log.w(TAG, context.getString(R.string.log_permission_denied_accessing_performance_data), e);
             currentCpuUsage = 0;
             currentMemoryMB = getMemoryUsageRuntime(); // 使用Runtime作为备选
         } catch (Exception e) {
-            Log.w(TAG, "更新性能统计失败", e);
+            Log.w(TAG, context.getString(R.string.log_error_updating_performance_stats), e);
         }
     }
     
@@ -179,10 +172,10 @@ public class BatteryStatsManager implements ComponentCallbacks2 {
                 }
             }
         } catch (SecurityException e) {
-            Log.w(TAG, "获取内存信息时权限不足", e);
+            Log.w(TAG, context.getString(R.string.log_permission_denied_getting_memory_info), e);
             currentMemoryMB = getMemoryUsageRuntime();
         } catch (Exception e) {
-            Log.w(TAG, "获取内存信息失败", e);
+            Log.w(TAG, context.getString(R.string.log_error_getting_memory_info), e);
             currentMemoryMB = getMemoryUsageRuntime();
         }
     }
@@ -220,18 +213,18 @@ public class BatteryStatsManager implements ComponentCallbacks2 {
     public String getChargingType() {
         IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         Intent batteryStatus = context.registerReceiver(null, ifilter);
-        if (batteryStatus == null) return "未知";
+        if (batteryStatus == null) return context.getString(R.string.unknown);
         
         int chargePlug = batteryStatus.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
         switch (chargePlug) {
             case BatteryManager.BATTERY_PLUGGED_AC:
-                return "交流电源";
+                return context.getString(R.string.charging_type_ac);
             case BatteryManager.BATTERY_PLUGGED_USB:
-                return "USB";
+                return context.getString(R.string.charging_type_usb);
             case BatteryManager.BATTERY_PLUGGED_WIRELESS:
-                return "无线充电";
+                return context.getString(R.string.charging_type_wireless);
             default:
-                return "未充电";
+                return context.getString(R.string.charging_type_not_charging);
         }
     }
 
@@ -287,7 +280,7 @@ public class BatteryStatsManager implements ComponentCallbacks2 {
         long hours = minutes / 60;
         minutes = minutes % 60;
         
-        return String.format(Locale.getDefault(), "%d小时%d分钟", hours, minutes);
+        return String.format(Locale.getDefault(), context.getString(R.string.formatted_running_time), hours, minutes);
     }
     
     /**
@@ -319,19 +312,19 @@ public class BatteryStatsManager implements ComponentCallbacks2 {
      */
     public String getBatteryStatsInfo() {
         StringBuilder info = new StringBuilder();
-        info.append("当前电池电量: ").append(getCurrentBatteryLevel()).append("%\n");
-        info.append("电池使用量: ").append(getBatteryUsage()).append("%\n");
-        info.append("运行时间: ").append(getFormattedRunningTime()).append("\n");
+        info.append(context.getString(R.string.battery_info_current_level, getCurrentBatteryLevel())).append("\n");
+        info.append(context.getString(R.string.battery_info_usage, getBatteryUsage())).append("\n");
+        info.append(context.getString(R.string.battery_info_running_time, getFormattedRunningTime())).append("\n");
         
         float temp = getBatteryTemperature();
-        info.append("电池温度: ").append(String.format(Locale.getDefault(), "%.1f", temp)).append("°C");
+        info.append(context.getString(R.string.battery_info_temperature, String.format(Locale.getDefault(), "%.1f", temp))).append("°C");
         
         if (peakTemperature > 0 && peakTemperature != temp) {
-            info.append(" (峰值: ").append(String.format(Locale.getDefault(), "%.1f", peakTemperature)).append("°C)");
+            info.append(context.getString(R.string.battery_info_peak_temperature, String.format(Locale.getDefault(), "%.1f", peakTemperature))).append("°C)");
         }
         
-        info.append("\n充电状态: ").append(isCharging() ? "正在充电 (" + getChargingType() + ")" : "未充电");
-        info.append("\n内存使用: ").append(String.format(Locale.getDefault(), "%.1f", getMemoryUsageMB())).append("MB");
+        info.append("\n").append(context.getString(R.string.battery_info_charging_status, isCharging() ? context.getString(R.string.charging_status_charging, getChargingType()) : context.getString(R.string.charging_status_not_charging)));
+        info.append("\n").append(context.getString(R.string.battery_info_memory_usage, String.format(Locale.getDefault(), "%.1f", getMemoryUsageMB())));
         
         return info.toString();
     }
@@ -346,12 +339,12 @@ public class BatteryStatsManager implements ComponentCallbacks2 {
         if (level >= ComponentCallbacks2.TRIM_MEMORY_COMPLETE || 
             level >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL) {
             // 内存非常紧张，需要立即释放所有可能的资源
-            Log.i(TAG, "内存严重不足，BatteryStatsManager执行紧急资源释放");
+            Log.i(TAG, context.getString(R.string.log_low_memory_critical));
             
             // 暂停数据统计任务
             if (statsTask != null && !statsTask.isDone()) {
                 statsTask.cancel(false);
-                Log.d(TAG, "暂停电池统计任务");
+                Log.d(TAG, context.getString(R.string.log_battery_stats_task_paused));
                 
                 // 设置定时器，在稍后尝试恢复
                 mainThreadHandler.postDelayed(() -> {
@@ -364,11 +357,11 @@ public class BatteryStatsManager implements ComponentCallbacks2 {
             
         } else if (level >= ComponentCallbacks2.TRIM_MEMORY_MODERATE) {
             // 内存较为紧张，可以释放一些非关键资源
-            Log.i(TAG, "内存较为紧张，BatteryStatsManager释放部分资源");
+            Log.i(TAG, context.getString(R.string.log_low_memory_moderate));
             
         } else if (level >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW) {
             // 内存有些紧张，可以考虑释放缓存
-            Log.i(TAG, "内存略有紧张，BatteryStatsManager执行轻度资源释放");
+            Log.i(TAG, context.getString(R.string.log_low_memory_low));
         }
     }
     
@@ -388,12 +381,12 @@ public class BatteryStatsManager implements ComponentCallbacks2 {
     @Override
     public void onLowMemory() {
         // 系统内存极度不足，需要释放所有非必要资源
-        Log.i(TAG, "系统内存极度不足，BatteryStatsManager执行全面资源释放");
+        Log.i(TAG, context.getString(R.string.log_system_low_memory_critical));
         
         // 暂停电池数据统计任务
         if (statsTask != null && !statsTask.isDone()) {
             statsTask.cancel(false);
-            Log.d(TAG, "暂停电池统计任务");
+            Log.d(TAG, context.getString(R.string.log_battery_stats_task_paused));
             
             // 设置定时器，在内存不足状态可能解除后恢复
             mainThreadHandler.postDelayed(() -> {
@@ -412,7 +405,7 @@ public class BatteryStatsManager implements ComponentCallbacks2 {
         // 取消注册内存回调
         if (context != null) {
             context.unregisterComponentCallbacks(this);
-            Log.d(TAG, "取消注册内存回调");
+            Log.d(TAG, context.getString(R.string.log_memory_callback_unregistered));
         }
         
         // 清理Handler中的回调

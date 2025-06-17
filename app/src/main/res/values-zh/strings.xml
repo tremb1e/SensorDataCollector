@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 应用信息 -->
+    <string name="app_name">传感器数据收集器</string>
+    
+    <!-- 状态消息 -->
+    <string name="service_not_connected">服务未连接，请稍后再试</string>
+    <string name="status_running">状态: 正在运行 (数据写入中)</string>
+    <string name="status_stopped">状态: 未运行</string>
+    <string name="status_collecting">状态：采集中</string>
+    <string name="status_idle">状态：空闲</string>
+    <string name="status_running_with_time">状态: 正在运行 (数据写入中) (%s)</string>
+    <string name="status_monitoring_with_time">状态: 正在监控 (未写入文件) (%s)</string>
+    <string name="status_stopped_with_time">状态: 未运行 (%s)</string>
+    
+    <!-- UI标签 -->
+    <string name="sensor_data_collection">传感器数据收集</string>
+    <string name="accelerometer">加速度计</string>
+    <string name="magnetometer">磁力计</string>
+    <string name="gyroscope">陀螺仪</string>
+    <string name="no_data">暂无数据</string>
+    <string name="current_file">当前文件: %s</string>
+    <string name="file_path">文件路径: %s</string>
+    <string name="foreground_app">前台应用：%s</string>
+    <string name="battery_level">电池电量：%d%%</string>
+    <string name="storage_size">存储大小：%s</string>
+    <string name="pending_files">待上传文件：%d</string>
+    <string name="last_upload_time">上次上传：%s</string>
+    <string name="upload_progress">上传进度：%s</string>
+    
+    <!-- 输入字段 -->
+    <string name="ip_address">IP 地址</string>
+    <string name="port">端口</string>
+    <string name="user_id">用户ID</string>
+    <string name="sampling_rate">采样率</string>
+    <string name="enter_ip_address">输入IP地址</string>
+    <string name="enter_port">输入端口</string>
+    <string name="enter_user_id">输入用户ID</string>
+    
+    <!-- 按钮 -->
+    <string name="start_service">开始</string>
+    <string name="stop_service">停止</string>
+    <string name="upload_files">上传</string>
+    <string name="clean_files">清理文件</string>
+    <string name="keep_recent_files">保留最近</string>
+    <string name="view_files">查看文件</string>
+    <string name="request_permissions">申请权限</string>
+    <string name="go_authorize">去授权</string>
+    <string name="later">稍后</string>    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确认</string>
+    <string name="start_upload">开始上传</string>
+    
+    <!-- Toast消息 -->
+    <string name="please_enter_server_info">请输入服务器IP和端口</string>
+    <string name="invalid_ip_format">IP地址格式不正确</string>
+    <string name="port_out_of_range">端口号必须在1-65535之间</string>
+    <string name="port_must_be_number">端口号必须是数字</string>
+    <string name="server_connection_success">服务器连接成功！</string>
+    <string name="operation_failed_retry">操作失败，请稍后重试</string>
+    <string name="no_files_to_upload">没有文件需要上传</string>
+    <string name="upload_in_progress">当前已有上传任务正在进行</string>
+    <string name="no_unuploaded_files">没有未上传的文件</string>
+    <string name="cannot_view_files">无法查看文件，请稍后重试</string>
+    <string name="data_directory_not_exist">数据文件目录不存在</string>
+    <string name="no_data_files_found">没有找到任何数据文件</string>
+    <string name="no_viewable_files">没有可查看的文件</string>
+    <string name="cannot_read_file">无法读取文件，请稍后重试</string>
+    <string name="file_exported_to">文件已导出到: %s</string>
+    <string name="export_failed">导出失败: %s</string>
+    <string name="cannot_get_file_list">无法获取文件列表，请稍后重试</string>
+    <string name="no_data_files">没有任何数据文件</string>
+    <string name="permissions_granted">权限已授权</string>
+    <string name="permissions_required">需要权限才能正常运行</string>
+    <string name="clear_upload_progress_records">已清除所有上传进度记录</string>
+    <string name="cancel_all_upload_tasks">已取消所有上传任务</string>
+    <string name="no_upload_tasks_in_progress">当前没有正在进行的上传任务</string>
+    <string name="timestamp_alignment_test_complete">时间戳对齐测试完成，请查看日志</string>
+    <string name="cleanup_failed">清理文件失败: %s</string>
+    <string name="organize_failed">整理文件失败: %s</string>
+    <string name="get_file_list_failed">获取文件列表失败: %s</string>
+    <string name="read_file_failed">读取文件失败: %s</string>
+    
+    <!-- 对话框消息 -->
+    <string name="usage_stats_permission_title">需要使用统计权限</string>
+    <string name="usage_stats_permission_message">为了获取前台应用名称，需要授予使用统计权限。\n\n请在跳转的设置页面中，找到本应用，并开启「允许查看使用情况」权限。</string>
+    <string name="file_cleanup_confirm">确认清理文件？</string>
+    
+    <!-- Snackbar消息 -->
+    <string name="start_recording_sensors">开始记录传感器数据，采样率: %dms</string>
+    <string name="data_collection_stopped">数据收集已停止</string>
+    
+    <!-- 服务和通知 -->
+    <string name="notification_channel_name">传感器服务通道</string>
+    <string name="notification_title">传感器服务</string>
+    <string name="notification_text">正在收集传感器数据</string>    <string name="service_started">服务已启动</string>
+    <string name="service_stopped">服务已停止</string>
+    <string name="notification_channel_description">显示传感器数据收集服务的状态</string>
+    
+    <!-- 错误消息 -->
+    <string name="error_creating_directory">创建目录时出错：%s</string>
+    <string name="file_saved">文件已保存：%s</string>
+    <string name="error_saving_file">保存文件时出错：%s</string>
+    <string name="no_network_connection">无网络连接</string>
+    <string name="error_connecting_to_server">连接服务器时出错：%s</string>
+    <string name="error_uploading_file">上传文件时出错：%s</string>
+    <string name="file_upload_progress">正在上传文件 %s (%d/%d)</string>
+    <string name="all_files_uploaded">所有文件已上传</string>
+    <string name="upload_successful">上传成功</string>
+    <string name="upload_failed">上传失败</string>
+    
+    <!-- 权限 -->
+    <string name="no_storage_permission">无存储权限</string>
+    <string name="no_battery_stats_permission">无电池状态权限</string>
+    <string name="no_usage_stats_permission">无使用情况统计权限</string>
+    
+    <!-- 文件管理 -->
+    <string name="files_deleted">文件已删除</string>
+    <string name="no_files_to_delete">没有要删除的文件</string>
+    
+    <!-- 最近应用 -->
+    <string name="recent_apps">最近使用的应用</string>
+      <!-- 数据标签 -->
+    <string name="x_axis">X: %s</string>
+    <string name="y_axis">Y: %s</string>
+    <string name="z_axis">Z: %s</string>
+    
+    <!-- 附加标签 -->
+    <string name="foreground_app_info">前台应用信息</string>
+    <string name="control_panel">控制面板</string>
+    <string name="file_management">文件管理</string>
+    <string name="server_settings">服务器设置</string>
+    <string name="sampling_rate_hint">较小的值会增加数据精度，但更消耗电量</string>
+    <string name="sampling_rate_label">采样率 (毫秒)</string>
+    <string name="battery_stats_unavailable">电池统计信息尚未可用</string>
+    <string name="storage_path">存储路径: </string>
+    <string name="unknown">未知</string>
+    <string name="unuploaded_files">未上传文件: </string>    <string name="files_count">%d个文件</string>
+    <string name="zero_files">0个文件</string>
+    <string name="storage_size_label">存储大小: </string>
+    <string name="zero_kb">0 KB</string>
+    <string name="last_upload_time_label">上次上传时间: </string>
+    <string name="never_uploaded">从未上传</string>
+    <string name="current_file_none">当前文件: 无</string>
+    <string name="upload_data_files">上传数据文件</string>
+    <string name="ready">准备就绪</string>
+    
+    <!-- 网络对话框 -->
+    <string name="network_connection_warning">网络连接警告</string>
+    <string name="network_connection_warning_message">当前无网络连接，上传可能会失败。确定要继续吗？</string>
+    <string name="continue_text">继续</string>
+    
+    <!-- 文件管理对话框 -->
+    <string name="confirm_cleanup_files">确认清理文件</string>
+    <string name="cleanup_files_message">此操作将删除所有传感器数据文件（除了当前正在写入的文件）。\n\n确定要继续吗？</string>
+    <string name="files_cleanup_complete">文件清理完成，共删除了 %d 个文件</string>
+    <string name="files_organized_complete">文件整理完成，保留了 %d 个最近文件</string>
+    <string name="confirm_keep_recent_files">确认保留最近文件</string>
+    <string name="keep_recent_files_message">此操作将保留最近的10个传感器数据文件，删除其余所有文件。\n\n确定要继续吗？</string>
+    <string name="files_organized_deleted_complete">文件整理完成，保留了最近10个文件，删除了 %d 个旧文件</string>
+    
+    <!-- 上传对话框 -->
+    <string name="upload_confirmation">上传确认</string>
+    <string name="upload_confirmation_message">准备上传 %1$d 个文件，总计约 %2$d KB (%3$s)\n\n服务器: %4$s:%5$s\n继续吗？</string>
+    <string name="preparing_upload_files">正在准备上传 %d 个文件...</string>
+    <string name="upload_started_log">开始上传 %1$d 个文件，总大小: %2$s 到服务器: %3$s:%4$s</string>
+    <string name="upload_failed_error">上传失败: %s</string>
+    <string name="upload_progress_percent">上传进度: %d%%</string>
+    <string name="foreground_app_failed">前台应用: 获取失败 - %s</string>
+    <string name="file_info_format">文件: %1$s\n大小: %2$s\n修改时间: %3$s</string>
+    
+    <!-- 附加Toast消息 -->
+    <string name="backgroundtask_not_initialized">后台任务执行器未初始化</string>
+    
+    <!-- 对话框标题 -->
+    <string name="upload_failed_title">上传失败</string>
+    <string name="upload_troubleshooting_title">上传故障排除</string>
+    <string name="upload_confirmation_title">上传确认</string>
+    <string name="upload_advanced_options_title">上传高级选项</string>
+    <string name="unuploaded_files_list_title">未上传文件列表</string>
+    <string name="select_file_to_view_title">选择要查看的文件</string>
+    <string name="read_file_title">读取文件</string>
+    <string name="file_content_title">文件内容</string>
+    <string name="all_data_files_title">所有数据文件</string>
+    <string name="connection_test_title">连接测试</string>
+    <string name="server_connection_failed_title">服务器连接失败</string>
+    
+    <!-- 上传对话框消息 -->
+    <string name="upload_troubleshooting_message">请检查以下项目：\n\n1. 网络连接是否稳定\n2. 服务器地址和端口是否正确\n3. 服务器是否正在运行且可访问\n4. 检查文件权限\n5. 如果使用WiFi，确保连接稳定\n\n服务器地址：%1$s\n服务器端口：%2$s</string>
+    
+    <!-- 文件列表消息 -->
+    <string name="unuploaded_files_count">共 %d 个未上传文件：\n\n</string>
+    
+    <!-- 数据目录 -->
+    <string name="data_directory_not_exist_message">数据文件目录不存在</string>
+      <!-- 按钮 -->
+    <string name="retry">重试</string>
+    <string name="view_details">查看详情</string>
+    <string name="clear_upload_progress">清除上传进度</string>
+    <string name="test_button">测试</string>
+    <string name="battery_stats_unavailable_text">电池统计信息尚未可用</string>
+    <string name="file_management_text">文件管理</string>
+    <string name="storage_path_text">存储路径：</string>
+      <!-- 服务器连接消息 -->
+    <string name="server_connection_failed_message">无法连接到服务器：%1$s:%2$s\n\n错误信息：%3$s</string>
+    
+    <!-- 电池管理器字符串 -->
+    <string name="log_memory_callback_registered">内存回调已注册</string>
+    <string name="log_battery_stats_monitoring_started">电池统计监控已启动</string>
+    <string name="log_error_starting_battery_stats_monitoring">启动电池统计监控时出错</string>
+    <string name="log_error_updating_stats">更新统计数据时出错</string>
+    <string name="log_permission_denied_accessing_performance_data">访问性能数据权限被拒绝</string>
+    <string name="log_error_updating_performance_stats">更新性能统计时出错</string>
+    <string name="log_permission_denied_getting_memory_info">获取内存信息权限被拒绝</string>
+    <string name="log_error_getting_memory_info">获取内存信息时出错</string>
+    <string name="charging_type_ac">交流电源</string>
+    <string name="charging_type_usb">USB</string>
+    <string name="charging_type_wireless">无线充电</string>
+    <string name="charging_type_not_charging">未充电</string>
+    <string name="formatted_running_time">%1$d小时%2$d分钟</string>
+    <string name="battery_info_current_level">当前电量：%d%%</string>
+    <string name="battery_info_usage">耗电量：%d%%</string>
+    <string name="battery_info_running_time">运行时间：%s</string>
+    <string name="battery_info_temperature">温度：%s</string>
+    <string name="battery_info_peak_temperature">（峰值：%s</string>
+    <string name="battery_info_charging_status">充电状态：%s</string>
+    <string name="charging_status_charging">%s</string>
+    <string name="charging_status_not_charging">未充电</string>
+    <string name="battery_info_memory_usage">内存：%s MB</string>
+    <string name="log_low_memory_critical">内存严重不足</string>
+    <string name="log_battery_stats_task_paused">电池统计任务已暂停</string>
+    <string name="log_low_memory_moderate">内存中等紧张</string>
+    <string name="log_low_memory_low">内存略有紧张</string>    <string name="log_system_low_memory_critical">系统内存严重不足</string>
+    <string name="log_memory_callback_unregistered">内存回调已取消注册</string>
+    
+    <!-- 附加UI字符串 -->
+    <string name="sensor_name_accelerometer">加速度计</string>
+    <string name="sensor_name_magnetometer">磁力计</string>
+    <string name="sensor_name_gyroscope">陀螺仪</string>
+    <string name="time_ago_just_now">刚刚</string>
+    <string name="time_ago_minutes">%d分钟前</string>
+    <string name="time_ago_hours">%d小时前</string>
+    <string name="time_ago_days">%d天前</string>
+    <string name="files_count_single">%d个文件</string>
+    <string name="server_ip_port_label">服务器IP地址，端口</string>
+    <string name="stop_recording_sensors">停止记录传感器数据</string>
+    <string name="upload_failed_duration">上传失败 (耗时: %s)</string>
+    <string name="upload_progress_detailed">上传进度: %1$d%% (%2$d/%3$d个文件)</string>
+    <string name="estimated_remaining">预计剩余: %s</string>
+    <string name="duration_milliseconds">%d毫秒</string>
+    <string name="duration_seconds">%.1f秒</string>
+    <string name="duration_minutes_seconds">%1$d分%2$d秒</string>
+    <string name="upload_confirmation_detailed">准备上传 %1$d 个文件，总计约 %2$d KB (%3$s)\n\n服务器: %4$s:%5$s</string>
+    <string name="clear_upload_progress_option">清除上传进度记录</string>
+    <string name="cancel_ongoing_uploads">取消正在进行的上传</string>
+    <string name="view_unuploaded_files">查看未上传文件列表</string>
+    <string name="view_all_data_files">查看所有数据文件</string>
+    <string name="test_server_connection">测试服务器连接</string>
+    <string name="including_other_files">...以及 %d 个其他文件</string>
+    <string name="confirm_button">确定</string>
+    <string name="no_data_files_found_message">没有找到任何数据文件</string>
+    <string name="file_list_failed">获取文件列表失败</string>
+    <string name="file_read_failed">读取文件失败: %s</string>
+    <string name="no_viewable_files_message">没有可查看的文件</string>
+    <string name="reading_file_content">正在读取文件内容，请稍候...</string>
+    <string name="close_button">关闭</string>
+    <string name="export_button">导出</string>
+    <string name="file_content_too_long">... (文件内容过长，仅显示前%d行)</string>
+    <string name="file_empty_or_unreadable">文件为空或无法读取内容</string>
+    <string name="file_exported_success">文件已导出到: %s</string>
+    <string name="export_file_failed">导出文件失败</string>
+    <string name="total_data_files">共 %d 个数据文件:\n\n</string>
+    <string name="clean_old_files">清理旧文件</string>
+    <string name="please_enter_server_ip_port">请输入服务器IP和端口</string>
+    <string name="testing_server_connection">正在测试服务器连接...</string>
+    <string name="server_connection_successful">服务器连接成功！</string>
+    <string name="operation_cannot_execute">操作无法执行，请稍后重试</string>
+    <string name="error_resolve_server_address">无法解析服务器地址: %s</string>
+    <string name="error_connection_refused">连接被拒绝，服务器可能未启动: %s</string>
+    <string name="error_connection_timeout">连接超时: %s</string>
+    <string name="error_connection_error">连接错误: %s</string>
+    <string name="error_unknown">未知错误: %s</string>
+    <string name="permission_insufficient_network">NetworkManager 检查网络状态时权限不足: %s</string>
+    <string name="network_status_check_failed">NetworkManager 检查网络状态失败: %s</string>
+    <string name="connectivity_manager_unavailable">ConnectivityManager 不可用</string>
+    <string name="permission_insufficient_backup">检查网络状态时权限不足，使用备用方法: %s</string>
+    <string name="permission_insufficient_general">检查网络状态时权限不足: %s</string>
+    <string name="network_status_exception">检查网络状态时发生异常: %s</string>
+    <string name="bind_sensor_service">绑定传感器服务</string>
+    <string name="invalid_sampling_rate_startup">启动收集时，无效的采样率格式，使用默认值10ms: %s</string>
+    <string name="sampling_rate_empty_startup">启动收集时，采样率Spinner或选中项为空，使用默认值10ms</string>
+    <string name="auto_start_data_collection">自动启动数据收集，采样率: %dms</string>
+    <string name="activity_destroyed_stop_ui">Activity已销毁、不可见或屏幕关闭，停止UI更新Runnable</string>
+    <string name="ui_update_error">UI更新出错</string>
+    <string name="stop_ui_update_status">停止UI更新调度 - Activity状态: destroyed=%1$b, visible=%2$b, screenOn=%3$b</string>
+    <string name="ui_update_task_started">UI更新任务已启动</string>
+    <string name="ui_update_task_stopped">UI更新任务已停止</string>
+    <string name="foreground_app_manager_null">ForegroundAppManager为空，跳过更新</string>
+    <string name="background_executor_unavailable">BackgroundTaskExecutor不可用，跳过前台应用信息更新</string>
+    <string name="activity_invisible_skip_update">Activity不可见，跳过前台应用信息更新</string>
+    <string name="start_get_foreground_app">开始获取前台应用信息</string>
+    <string name="get_foreground_app_success">获取前台应用信息成功: %s</string>
+    <string name="get_recent_apps_success">获取最近应用列表成功，数量: %d</string>
+    <string name="activity_destroyed_skip_ui_update">Activity已销毁，跳过UI更新</string>
+    <string name="foreground_app_text">前台应用: %s</string>
+    <string name="foreground_app_ui_update_complete">前台应用UI更新完成</string>
+    <string name="main_thread_update_foreground_app_error">在主线程更新前台应用UI时出错</string>
+    <string name="get_foreground_app_error">获取前台应用信息时出错</string>
+    <string name="start_foreground_app_update_failed">启动前台应用信息更新任务失败</string>
+    <string name="update_recent_apps_list">更新最近应用列表，包含 %d 个应用</string>
+    <string name="unknown_app">未知应用</string>
+    <string name="need_usage_stats_permission">需要使用统计权限</string>
+    <string name="system_app">系统应用</string>
+    <string name="sensor_data_collector_app">传感器数据收集器</string>
+    <string name="invalid_sampling_rate_default">无效的采样率格式，使用默认值10ms: %s</string>
+    <string name="sampling_rate_empty_default">采样率Spinner或选中项为空，使用默认值10ms</string>
+    <string name="timestamp_alignment_test_start">开始执行时间戳对齐测试</string>
+    <string name="cleanup_files_failed">清理文件失败</string>
+    <string name="organize_files_failed">整理文件失败</string>
+    <string name="start_upload_files">开始上传 %1$d 个文件，总大小: %2$s 到服务器: %3$s:%4$s</string>
+    <string name="upload_success_with_count">成功上传了 %d 个文件</string>
+    <string name="upload_start_queue_processing">开始上传队列处理，共%d个文件</string>
+    <string name="file_not_exist_or_empty">文件不存在或为空: %s</string>
+    <string name="prepare_upload_file">准备上传文件 %1$d/%2$d: %3$s (%4$s)</string>
+    <string name="retry_upload_file">重试上传文件(%1$d/%2$d): %3$s</string>
+    <string name="upload_interrupted">上传过程被中断: %s</string>    <string name="upload_cancelled">上传被取消: %s</string>
+    <string name="upload_file_io_exception">上传文件IO异常</string>
+    <string name="upload_timeout_retry">上传超时，准备重试</string>
+    <string name="server_connection_failed_retry">连接服务器失败，准备重试</string>
+    <string name="server_address_resolve_failed_retry">未能解析服务器地址，准备重试</string>
+    <string name="network_connection_error_retry">网络连接错误，准备重试</string>
+    <string name="protocol_error_retry">协议错误，准备重试</string>
+    <string name="stream_unexpected_end_clear_progress">检测到流意外结束，清除断点续传进度: %s</string>
+    <string name="data_stream_unexpected_end_retry">数据流意外结束，准备重试</string>
+    <string name="upload_file_unexpected_error">上传文件时发生意外错误: %s</string>
+    <string name="file_upload_successful">文件上传成功 %1$d/%2$d: %3$s</string>
+    <string name="upload_file_failed_max_retries">上传文件失败，已达最大重试次数: %s</string>
+    <string name="upload_file_process_exception">处理文件上传过程中出现异常: %s</string>
+    <string name="upload_failed_with_filename">上传 %1$s 失败: %2$s</string>
+    <string name="upload_success_total_files">成功上传了 %d 个文件</string>
+    <string name="all_files_upload_success_total">所有文件上传成功，总数: %d</string>
+    
+    <!-- 额外的硬编码字符串 -->
+    <string name="sensor_accelerometer_label">加速度计: %s</string>
+    <string name="sensor_magnetometer_label">磁力计: %s</string>
+    <string name="sensor_gyroscope_label">陀螺仪: %s</string>
+    <string name="foreground_app_label">前台应用: %s</string>
+    <string name="upload_success_message">上传成功: %1$s (耗时: %2$s)</string>
+    <string name="upload_failed_message">上传失败 (耗时: %s)</string>
+    <string name="upload_progress_format">上传进度: %1$d%% (%2$d/%3$d个文件)</string>
+    <string name="estimated_remaining_time">预计剩余: %s</string>
+    <string name="time_milliseconds">%d毫秒</string>
+    <string name="time_seconds">%.1f秒</string>
+    <string name="time_minutes_seconds">%1$d分%2$d秒</string>
+    <string name="upload_confirmation_message_formatted">准备上传 %1$d 个文件，总计约 %2$s KB (%3$s)\n\n服务器: %4$s:%5$s</string>
+    <string name="server_label">服务器: %1$s:%2$s</string>
+    <string name="stop_data_recording">停止记录传感器数据</string>
+    <string name="invalid_sampling_rate_format_log">启动收集时，无效的采样率格式，使用默认值10ms: %s</string>
+    <string name="sampling_rate_spinner_empty_log">启动收集时，采样率Spinner或选中项为空，使用默认值10ms</string>
+    
+    <!-- 错误日志消息 -->
+    <string name="invalid_sampling_rate_auto_start_log">自动启动收集时，无效的采样率格式，使用默认值10ms: %s</string>
+    <string name="sampling_rate_empty_auto_start_log">自动启动收集时，采样率Spinner或选中项为空，使用默认值10ms</string>
+    
+    <!-- 文件大小单位 -->
+    <string name="file_size_bytes">%d B</string>
+    <string name="file_size_kb">%.2f KB</string>
+    <string name="file_size_mb">%.2f MB</string>
+    <string name="file_size_gb">%.2f GB</string>
+    
+    <!-- 带时间的状态消息 -->
+    <string name="status_running_time_format">状态: 正在运行 (数据写入中) (%s)</string>
+    <string name="status_monitoring_time_format">状态: 正在监控 (未写入文件) (%s)</string>
+    <string name="status_stopped_time_format">状态: 未运行 (%s)</string>
+    
+    <!-- 时间格式 -->
+    <string name="hour_ago">%d小时前</string>
+    <string name="minutes_ago">%d分钟前</string>
+    <string name="just_now">刚刚</string>
+      <!-- 文件计数 -->
+    <string name="file_count">%d个文件</string>
+    <string name="single_file">1个文件</string>
+    
+    <!-- 额外的硬编码字符串替换 -->
+    <string name="dialog_cancel">取消</string>
+    <string name="never_uploaded_text">从未上传</string>
+    <string name="files_text">%d个文件 (%d KB)</string>
+    <string name="app_info_unavailable">应用信息获取失败</string>
+    <string name="from_never_uploaded">从未上传</string>
+    <string name="error_invalid_server_info">服务器IP或端口无效</string>
+    <string name="upload_success_count_log">成功上传了 %d 个文件</string>
+    <string name="all_files_upload_success_log">所有文件上传成功，总数: %d</string>
+    <string name="server_connection_test_success">服务器连接测试成功: %1$d %2$s</string>
+    <string name="server_connection_success_response">服务器连接成功: %s</string>
+    <!-- 传感器数据显示前缀 -->
+    <string name="sensor_accelerometer_prefix">加速度: %s</string>
+    <string name="sensor_magnetometer_prefix">磁力: %s</string>
+    <string name="sensor_gyroscope_prefix">陀螺仪: %s</string>
+    
+    <!-- 网络状态检查日志消息 -->
+    <string name="network_manager_permission_insufficient">NetworkManager 检查网络状态时权限不足: %s</string>
+    <string name="network_manager_check_failed">NetworkManager 检查网络状态失败: %s</string>
+    <string name="network_status_permission_backup">检查网络状态时权限不足，使用备用方法: %s</string>
+    <string name="network_status_permission_general">检查网络状态时权限不足: %s</string>
+    <string name="network_status_exception_general">检查网络状态时发生异常: %s</string>    <string name="permission_insufficient_assume_available">如果权限不足，假设网络可用，让上传尝试进行</string>    <string name="update_recent_apps_error">更新最近应用列表时出错</string>
+    
+    <!-- 输入提示文本 -->
+    <string name="server_ip_hint">服务器IP地址</string>
+    <string name="server_port_hint">端口</string>
+    
+    <string name="server_error_status_code">服务器返回错误状态码: %1$d %2$s</string>
+    
+</resources>

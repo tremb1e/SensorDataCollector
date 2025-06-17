@@ -41,7 +41,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="传感器数据收集"
+                    android:text="@string/sensor_data_collection"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorPrimary" />
@@ -54,7 +54,7 @@
                     android:id="@+id/tv_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="状态: 未运行"
+                    android:text="@string/status_stopped"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -76,7 +76,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="加速度计"
+                        android:text="@string/accelerometer"
                         android:textColor="@color/title_text"
                         android:textStyle="bold" />
 
@@ -85,7 +85,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="暂无数据"
+                        android:text="@string/no_data"
                         android:textColor="@color/data_text" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -108,7 +108,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="磁力计"
+                        android:text="@string/magnetometer"
                         android:textColor="@color/title_text"
                         android:textStyle="bold" />
 
@@ -117,7 +117,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="暂无数据"
+                        android:text="@string/no_data"
                         android:textColor="@color/data_text" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -140,7 +140,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="陀螺仪"
+                        android:text="@string/gyroscope"
                         android:textColor="@color/title_text"
                         android:textStyle="bold" />
 
@@ -149,7 +149,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="暂无数据"
+                        android:text="@string/no_data"
                         android:textColor="@color/data_text" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -178,7 +178,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="前台应用信息"
+                            android:text="@string/foreground_app_info"
                             android:textColor="@color/title_text"
                             android:textStyle="bold" />
 
@@ -191,7 +191,7 @@
                             android:id="@+id/btn_permission"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="请求权限"
+                            android:text="@string/request_permissions"
                             android:textSize="12sp"
                             android:visibility="gone"
                             style="@style/Widget.MaterialComponents.Button.TextButton" />
@@ -202,14 +202,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="前台应用: 获取中..."
+                        android:text="@string/foreground_app"
                         android:textColor="@color/data_text" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="最近使用的应用:"
+                        android:text="@string/recent_apps"
                         android:textColor="@color/title_text" />
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -240,7 +240,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="控制面板"
+                        android:text="@string/control_panel"
                         android:textStyle="bold"
                         android:textColor="@color/title_text"
                         android:textSize="16sp" />
@@ -249,20 +249,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:hint="用户ID">
+                        android:hint="@string/user_id">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_user_id"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="text"
-                            android:text="test" />
+                            android:text="@string/test_button" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="采样率 (毫秒)"
+                        android:text="@string/sampling_rate_label"
                         android:layout_marginTop="8dp"
                         android:textColor="@color/title_text" />
                         
@@ -276,7 +276,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="较小的值会增加数据精度，但更消耗电量"
+                        android:text="@string/sampling_rate_hint"
                         android:textSize="12sp"
                         android:textColor="@color/data_text"
                         android:layout_marginTop="2dp" />
@@ -293,7 +293,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginEnd="4dp"
-                            android:text="开始收集"
+                            android:text="@string/start_service"
                             android:textColor="@color/white"
                             app:backgroundTint="@color/button_start" />
 
@@ -303,7 +303,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="4dp"
-                            android:text="停止收集"
+                            android:text="@string/stop_service"
                             android:textColor="@color/white"
                             app:backgroundTint="@color/button_stop"
                             android:enabled="false" />
@@ -314,7 +314,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="电池统计信息尚未可用"
+                        android:text="@string/battery_stats_unavailable_text"
                         android:textColor="@color/data_text" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -337,7 +337,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="文件管理"
+                        android:text="@string/file_management_text"
                         android:textColor="@color/title_text"
                         android:textStyle="bold" />
 
@@ -350,14 +350,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="存储路径: "
+                            android:text="@string/storage_path_text"
                             android:textColor="@color/title_text" />
 
                         <TextView
                             android:id="@+id/tv_file_path"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="未知"
+                            android:text="@string/unknown"
                             android:textColor="@color/data_text" />
                     </LinearLayout>
 
@@ -370,14 +370,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="未上传文件: "
+                            android:text="@string/unuploaded_files"
                             android:textColor="@color/title_text" />
 
                         <TextView
                             android:id="@+id/tv_pending_files"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="0个文件"
+                            android:text="@string/zero_files"
                             android:textColor="@color/data_text" />
                     </LinearLayout>
 
@@ -390,7 +390,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="存储大小: "
+                            android:text="@string/storage_size_label"
                             android:textColor="@color/title_text" />
 
                         <TextView
@@ -410,14 +410,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="上次上传时间: "
+                            android:text="@string/last_upload_time_label"
                             android:textColor="@color/title_text" />
 
                         <TextView
                             android:id="@+id/tv_last_upload_time"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="从未上传"
+                            android:text="@string/never_uploaded"
                             android:textColor="@color/data_text" />
                     </LinearLayout>
 
@@ -434,7 +434,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginEnd="4dp"
-                            android:text="清理文件"
+                            android:text="@string/clean_files"
                             android:textSize="12sp"
                             style="@style/Widget.Material3.Button.OutlinedButton" />
 
@@ -445,7 +445,7 @@
                             android:layout_weight="1"
                             android:layout_marginStart="4dp"
                             android:layout_marginEnd="4dp"
-                            android:text="保留最近10份"
+                            android:text="@string/keep_recent_files"
                             android:textSize="12sp"
                             style="@style/Widget.Material3.Button.OutlinedButton" />
 
@@ -455,7 +455,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="4dp"
-                            android:text="查看文件"
+                            android:text="@string/view_files"
                             android:textSize="12sp"
                             style="@style/Widget.Material3.Button.OutlinedButton" />
                     </LinearLayout>
@@ -465,7 +465,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="当前文件: 无"
+                        android:text="@string/current_file_none"
                         android:textColor="@color/data_text"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -490,7 +490,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="服务器设置"
+                        android:text="@string/server_settings"
                         android:textColor="@color/title_text"
                         android:textStyle="bold" />
 
@@ -498,7 +498,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:hint="服务器IP地址">
+                        android:hint="@string/server_ip_hint">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_server_ip"
@@ -512,7 +512,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:hint="端口">
+                        android:hint="@string/server_port_hint">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_server_port"
@@ -527,7 +527,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="上传数据文件"
+                        android:text="@string/upload_data_files"
                         android:textColor="@color/white"
                         app:backgroundTint="@color/button_upload" />
 
@@ -536,7 +536,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="准备就绪"
+                        android:text="@string/ready"
                         android:textColor="@color/data_text"
                         android:visibility="gone" />
 

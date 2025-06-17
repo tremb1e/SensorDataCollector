@@ -142,7 +142,7 @@ public class NetworkManager implements ComponentCallbacks2 {
         }
         
         if (!isValidServerInfo(serverIp, serverPort)) {
-            String errorMsg = "服务器IP或端口无效";
+            String errorMsg = context.getString(R.string.error_invalid_server_info);
             Log.e(TAG, errorMsg + ": IP=" + serverIp + ", Port=" + serverPort);
             mainHandler.post(() -> callback.onFailure(errorMsg));
             return;
@@ -344,8 +344,8 @@ public class NetworkManager implements ComponentCallbacks2 {
                 mainHandler.post(() -> {
                     if (finalFailCount == 0) {
                         callback.onProgress(100);
-                        callback.onSuccess("成功上传了 " + finalSuccessCount + " 个文件");
-                        Log.i(TAG, "所有文件上传成功，总数: " + finalSuccessCount);
+                        callback.onSuccess(context.getString(R.string.upload_success_count_log, finalSuccessCount));
+                        Log.i(TAG, context.getString(R.string.all_files_upload_success_log, finalSuccessCount));
                     } else {
                         String message = "上传完成，成功: " + finalSuccessCount + "，失败: " + finalFailCount;
                         if (errorSummary.length() > 0) {
@@ -601,11 +601,11 @@ public class NetworkManager implements ComponentCallbacks2 {
                 final String finalResponseBody = responseBody;
                 
                 if (code >= 200 && code < 300) {
-                    Log.i(TAG, "服务器连接测试成功: " + code + " " + message);
-                    mainHandler.post(() -> callback.onSuccess("服务器连接成功: " + finalResponseBody));
+                    Log.i(TAG, context.getString(R.string.server_connection_test_success, code, message));
+                    mainHandler.post(() -> callback.onSuccess(context.getString(R.string.server_connection_success_response, finalResponseBody)));
                 } else {
-                    Log.w(TAG, "服务器返回错误状态码: " + code + " " + message);
-                    mainHandler.post(() -> callback.onFailure("服务器响应异常: " + code + " " + message));
+                    Log.w(TAG, context.getString(R.string.server_error_status_code, code, message));
+                    mainHandler.post(() -> callback.onFailure(context.getString(R.string.server_error_status_code, code, message)));
                 }
             }
         });

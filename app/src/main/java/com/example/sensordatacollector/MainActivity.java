@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
             SensorService.LocalBinder binder = (SensorService.LocalBinder) service;
             sensorService = binder.getService();
             isBound = true;
-            Log.i(TAG, "服务已连接: " + name.getClassName());
+            Log.i(TAG, getString(R.string.service_started) + ": " + name.getClassName());
             updateServiceStatus();
             if (sensorService != null && etSamplingRate != null) {
                 etSamplingRate.setSelection(findSamplingRateIndex(sensorService.getSamplingRateMs()));
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
         public void onServiceDisconnected(ComponentName name) {
             isBound = false;
             sensorService = null;
-            Log.w(TAG, "服务已断开连接: " + name.getClassName());
+            Log.w(TAG, getString(R.string.service_stopped) + ": " + name.getClassName());
             updateServiceStatus();
         }
     };
@@ -274,11 +274,11 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
             try {
                 samplingRate = Integer.parseInt(etSamplingRate.getSelectedItem().toString());
             } catch (NumberFormatException e) {
-                Log.e(TAG, "无效的采样率格式，使用默认值10ms: " + etSamplingRate.getSelectedItem().toString(), e);
+                Log.e(TAG, getString(R.string.invalid_sampling_rate_default, etSamplingRate.getSelectedItem().toString()), e);
                 samplingRate = 10; // Fallback to default
             }
         } else {
-            Log.w(TAG, "采样率Spinner或选中项为空，使用默认值10ms");
+            Log.w(TAG, getString(R.string.sampling_rate_empty_default));
             samplingRate = 10; // Fallback to default
         }
         
@@ -330,15 +330,15 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
             
             // 显示权限提示对话框
             AlertDialog permissionDialog = new AlertDialog.Builder(this)
-                .setTitle("需要使用统计权限")
-                .setMessage("为了获取前台应用名称，需要授予使用统计权限。\n\n请在跳转的设置页面中，找到本应用，并开启「允许查看使用情况」权限。")
-                .setPositiveButton("去授权", (d, which) -> {
+                .setTitle(getString(R.string.usage_stats_permission_title))
+                .setMessage(getString(R.string.usage_stats_permission_message))
+                .setPositiveButton(getString(R.string.go_authorize), (d, which) -> {
                     if (foregroundAppManager != null) {
                         foregroundAppManager.openUsageAccessSettings();
                     }
                     dismissCurrentDialog(); // 正确关闭
                 })
-                .setNegativeButton("稍后", (d, which) -> dismissCurrentDialog())
+                .setNegativeButton(getString(R.string.later), (d, which) -> dismissCurrentDialog())
                 .setOnCancelListener(d -> dismissCurrentDialog())
                 .show();
             currentDialog = permissionDialog; // 保存对话框引用
@@ -357,7 +357,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
         // 开始按钮
         btnStart.setOnClickListener(v -> {
             if (!isBound || sensorService == null) {
-                Toast.makeText(this, "服务未连接，请稍后再试", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.service_not_connected), Toast.LENGTH_SHORT).show();
                 bindSensorService();
                 return;
             }
@@ -367,11 +367,11 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                 try {
                     samplingRate = Integer.parseInt(etSamplingRate.getSelectedItem().toString());
                 } catch (NumberFormatException e) {
-                    Log.e(TAG, "启动收集时，无效的采样率格式，使用默认值10ms: " + etSamplingRate.getSelectedItem().toString(), e);
+                    Log.e(TAG, getString(R.string.invalid_sampling_rate_format_log, etSamplingRate.getSelectedItem().toString()), e);
                     samplingRate = 10; // Fallback to default
                 }
             } else {
-                 Log.w(TAG, "启动收集时，采样率Spinner或选中项为空，使用默认值10ms");
+                 Log.w(TAG, getString(R.string.sampling_rate_spinner_empty_log));
                  samplingRate = 10; // Fallback to default
             }
             
@@ -386,9 +386,9 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
             statusIndicator.setActivated(true);
             btnStart.setEnabled(false);
             btnStop.setEnabled(true);
-            tvStatus.setText("状态: 正在运行 (数据写入中)");
+            tvStatus.setText(getString(R.string.status_running));
             
-            Snackbar.make(v, "开始记录传感器数据，采样率: " + samplingRate + "ms", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(v, getString(R.string.start_recording_sensors, samplingRate), Snackbar.LENGTH_LONG).show();
         });
         
         // 停止按钮
@@ -406,7 +406,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                 btnStart.setEnabled(true);
                 btnStop.setEnabled(false);
                 
-                Snackbar.make(v, "停止记录传感器数据", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(v, getString(R.string.stop_recording_sensors), Snackbar.LENGTH_LONG).show();
             }
         });
         
@@ -416,13 +416,13 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
             String port = etServerPort.getText().toString().trim();
             
             if (ip.isEmpty() || port.isEmpty()) {
-                Toast.makeText(this, "请输入服务器IP和端口", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.please_enter_server_info), Toast.LENGTH_SHORT).show();
                 return;
             }
             
             // 检查IP格式
             if (!isValidIpAddress(ip) && !ip.equals("localhost")) {
-                Toast.makeText(this, "IP地址格式不正确", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.invalid_ip_format), Toast.LENGTH_SHORT).show();
                 return;
             }
             
@@ -430,24 +430,24 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
             try {
                 int portNum = Integer.parseInt(port);
                 if (portNum <= 0 || portNum > 65535) {
-                    Toast.makeText(this, "端口号必须在1-65535之间", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.port_out_of_range), Toast.LENGTH_SHORT).show();
                     return;
                 }
             } catch (NumberFormatException e) {
-                Toast.makeText(this, "端口号必须是数字", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.port_must_be_number), Toast.LENGTH_SHORT).show();
                 return;
             }
             
             // 检查网络连接状态
             if (!isNetworkAvailable()) {
                 AlertDialog networkDialog = new AlertDialog.Builder(this)
-                    .setTitle("网络连接警告")
-                    .setMessage("当前无网络连接，上传可能会失败。确定要继续吗？")
-                    .setPositiveButton("继续", (d, which) -> {
+                    .setTitle(getString(R.string.network_connection_warning))
+                    .setMessage(getString(R.string.network_connection_warning_message))
+                    .setPositiveButton(getString(R.string.continue_text), (d, which) -> {
                         proceedWithUpload(ip, port);
                         dismissCurrentDialog();
                     })
-                    .setNegativeButton("取消", (d, which) -> dismissCurrentDialog())
+                    .setNegativeButton(getString(R.string.cancel), (d, which) -> dismissCurrentDialog())
                     .setOnCancelListener(d -> dismissCurrentDialog())
                     .show();
                 currentDialog = networkDialog;
@@ -467,10 +467,10 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
         btnStop.setOnLongClickListener(v -> {
             if (backgroundTaskExecutor != null && !backgroundTaskExecutor.isShutdown()) {
                 backgroundTaskExecutor.submit(() -> {
-                    Log.i(TAG, "开始执行时间戳对齐测试");
+                    Log.i(TAG, getString(R.string.timestamp_alignment_test_start));
                     TimestampAlignmentTest.runAllTests();
                     runOnUiThread(() -> {
-                        Toast.makeText(MainActivity.this, "时间戳对齐测试完成，请查看日志", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, getString(R.string.timestamp_alignment_test_complete), Toast.LENGTH_LONG).show();
                     });
                 });
             }
@@ -492,12 +492,12 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
         // 清理文件按钮
         btnCleanFiles.setOnClickListener(v -> {
             AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("确认清理文件")
-                .setMessage("此操作将删除所有传感器数据文件（除了当前正在写入的文件）。\n\n确定要继续吗？")
-                .setPositiveButton("确定", (d, which) -> {
+                .setTitle(getString(R.string.confirm_cleanup_files))
+                .setMessage(getString(R.string.cleanup_files_message))
+                .setPositiveButton(getString(R.string.confirm), (d, which) -> {
                     if (backgroundTaskExecutor == null || backgroundTaskExecutor.isShutdown()) { // 安全检查
-                        Log.w(TAG, "BackgroundTaskExecutor 未初始化或已关闭，无法清理文件。");
-                        runOnUiThread(() -> Toast.makeText(MainActivity.this, "操作失败，请稍后重试", Toast.LENGTH_SHORT).show());
+                        Log.w(TAG, getString(R.string.backgroundtask_not_initialized));
+                        runOnUiThread(() -> Toast.makeText(MainActivity.this, getString(R.string.operation_failed_retry), Toast.LENGTH_SHORT).show());
                         dismissCurrentDialog();
                         return;
                     }
@@ -505,20 +505,20 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                         try {
                             int deletedCount = storageManager.cleanAllFiles();
                             runOnUiThread(() -> {
-                                String message = "文件清理完成，共删除了 " + deletedCount + " 个文件";
+                                String message = getString(R.string.files_cleanup_complete, deletedCount);
                                 Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
                                 updateFileInfo();
                             });
                         } catch (Exception e) {
-                            Log.e(TAG, "清理文件失败", e);
+                            Log.e(TAG, getString(R.string.cleanup_files_failed), e);
                             runOnUiThread(() -> {
-                                Toast.makeText(MainActivity.this, "清理文件失败: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, getString(R.string.cleanup_failed, e.getMessage()), Toast.LENGTH_SHORT).show();
                             });
                         }
                     });
                     dismissCurrentDialog();
                 })
-                .setNegativeButton("取消", (d, which) -> dismissCurrentDialog())
+                .setNegativeButton(getString(R.string.cancel), (d, which) -> dismissCurrentDialog())
                 .setOnCancelListener(d -> dismissCurrentDialog())
                 .show();
             currentDialog = dialog;
@@ -527,12 +527,12 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
         // 保留最近10份文件按钮
         btnKeepRecentFiles.setOnClickListener(v -> {
             AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("确认保留最近文件")
-                .setMessage("此操作将保留最近的10个传感器数据文件，删除其余所有文件。\n\n确定要继续吗？")
-                .setPositiveButton("确定", (d, which) -> {
+                .setTitle(getString(R.string.confirm_keep_recent_files))
+                .setMessage(getString(R.string.keep_recent_files_message))
+                .setPositiveButton(getString(R.string.confirm), (d, which) -> {
                     if (backgroundTaskExecutor == null || backgroundTaskExecutor.isShutdown()) { // 安全检查
-                        Log.w(TAG, "BackgroundTaskExecutor 未初始化或已关闭，无法整理文件。");
-                        runOnUiThread(() -> Toast.makeText(MainActivity.this, "操作失败，请稍后重试", Toast.LENGTH_SHORT).show());
+                        Log.w(TAG, getString(R.string.backgroundtask_not_initialized));
+                        runOnUiThread(() -> Toast.makeText(MainActivity.this, getString(R.string.operation_failed_retry), Toast.LENGTH_SHORT).show());
                         dismissCurrentDialog();
                         return;
                     }
@@ -540,20 +540,20 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                         try {
                             int deletedCount = storageManager.keepRecentFiles(10);
                             runOnUiThread(() -> {
-                                String message = "文件整理完成，保留了最近10个文件，删除了 " + deletedCount + " 个旧文件";
+                                String message = getString(R.string.files_organized_deleted_complete, deletedCount);
                                 Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
                                 updateFileInfo();
                             });
                         } catch (Exception e) {
-                            Log.e(TAG, "整理文件失败", e);
+                            Log.e(TAG, getString(R.string.organize_files_failed), e);
                             runOnUiThread(() -> {
-                                Toast.makeText(MainActivity.this, "整理文件失败: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, getString(R.string.organize_failed, e.getMessage()), Toast.LENGTH_SHORT).show();
                             });
                         }
                     });
                     dismissCurrentDialog();
                 })
-                .setNegativeButton("取消", (d, which) -> dismissCurrentDialog())
+                .setNegativeButton(getString(R.string.cancel), (d, which) -> dismissCurrentDialog())
                 .setOnCancelListener(d -> dismissCurrentDialog())
                 .show();
             currentDialog = dialog;
@@ -565,12 +565,12 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
      */
     private void startFileUpload(List<File> filesToUpload, String ip, String port) {
         if (filesToUpload == null || filesToUpload.isEmpty()) {
-            Toast.makeText(this, "没有文件需要上传", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.no_files_to_upload), Toast.LENGTH_SHORT).show();
             return;
         }
         
         if (networkManager.isUploading()) {
-            Toast.makeText(this, "当前已有上传任务正在进行", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.upload_in_progress), Toast.LENGTH_SHORT).show();
             return;
         }
         
@@ -585,8 +585,8 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
         final int totalFiles = filesToUpload.size();
         final long totalSize = getTotalFileSize(filesToUpload);
         
-        Log.i(TAG, "开始上传 " + totalFiles + " 个文件，总大小: " + formatFileSize(totalSize) + " 到服务器: " + ip + ":" + port);
-        tvUploadProgress.setText("正在准备上传 " + totalFiles + " 个文件...");
+        Log.i(TAG, getString(R.string.start_upload_files, totalFiles, formatFileSize(totalSize), ip, port));
+        tvUploadProgress.setText(getString(R.string.preparing_upload_files, totalFiles));
         
         // 执行上传
         networkManager.uploadFiles(filesToUpload, ip, port, new NetworkManager.UploadCallback() {
@@ -598,7 +598,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                     return;
                 }
                 long duration = System.currentTimeMillis() - startTime;
-                String successMessage = "上传成功: " + responseBody + " (耗时: " + formatDuration(duration) + ")";
+                String successMessage = getString(R.string.upload_success_message, responseBody, formatDuration(duration));
                 Log.i(TAG, successMessage);
                 
                 runOnUiThread(() -> {
@@ -611,7 +611,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                     updateFileInfo();
                     
                     // 显示成功提示
-                    Snackbar.make(btnUpload, "成功上传了 " + filesToUpload.size() + " 个文件", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(btnUpload, getString(R.string.upload_success_with_count, filesToUpload.size()), Snackbar.LENGTH_LONG).show();
                     
                     // 5秒后隐藏进度条
                     uiUpdateHandler.postDelayed(() -> {
@@ -629,7 +629,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                     return;
                 }
                 long duration = System.currentTimeMillis() - startTime;
-                String failureMessage = "上传失败 (耗时: " + formatDuration(duration) + ")";
+                String failureMessage = getString(R.string.upload_failed_message, formatDuration(duration));
                 Log.e(TAG, failureMessage + ": " + errorMessage);
                 
                 runOnUiThread(() -> {
@@ -640,19 +640,19 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                         displayErrorMsg = errorMessage.substring(0, 100) + "...";
                     }
                     
-                    tvUploadProgress.setText("上传失败: " + displayErrorMsg);
+                    tvUploadProgress.setText(getString(R.string.upload_failed_error, displayErrorMsg));
                     btnUpload.setEnabled(true);
                     
                     // 显示完整错误信息的对话框
                     AlertDialog uploadErrorDialog = new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("上传失败")
+                        .setTitle(getString(R.string.upload_failed_title))
                         .setMessage(errorMessage)
-                        .setPositiveButton("重试", (d, which) -> {
+                        .setPositiveButton(getString(R.string.retry), (d, which) -> {
                             // 重试上传
                             dismissCurrentDialog(); // 先关闭当前错误对话框
                             startFileUpload(filesToUpload, ip, port);
                         })
-                        .setNeutralButton("查看详情", (d, which) -> {
+                        .setNeutralButton(getString(R.string.view_details), (d, which) -> {
                             // 显示更详细的错误日志或排除建议
                             dismissCurrentDialog(); // 先关闭当前错误对话框
                             showUploadTroubleshootDialog();
@@ -688,18 +688,18 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                         long estimated = elapsed * 100 / overallProgress;
                         long remaining = estimated - elapsed;
                         
-                        String progressText = String.format("上传进度: %d%% (%d/%d个文件)", 
+                        String progressText = getString(R.string.upload_progress_format, 
                             overallProgress, 
                             Math.min((overallProgress * totalFiles) / 100, totalFiles),
                             totalFiles);
                         
                         if (remaining > 0) {
-                            progressText += ", 预计剩余: " + formatDuration(remaining);
+                            progressText += ", " + getString(R.string.estimated_remaining_time, formatDuration(remaining));
                         }
                         
                         tvUploadProgress.setText(progressText);
                     } else {
-                        tvUploadProgress.setText("上传进度: " + overallProgress + "%");
+                        tvUploadProgress.setText(getString(R.string.upload_progress_percent, overallProgress));
                     }
                 });
             }
@@ -711,21 +711,14 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
      */
     private void showUploadTroubleshootDialog() {
         AlertDialog dialog = new AlertDialog.Builder(this)
-            .setTitle("上传故障排除")
-            .setMessage(
-                "请检查以下可能的问题：\n\n" +
-                "1. 确保服务器地址和端口正确\n" +
-                "2. 确保服务器已启动并可访问\n" +
-                "3. 检查网络连接是否正常\n" +
-                "4. 检查文件权限\n" +
-                "5. 如果使用WiFi，确保连接稳定\n\n" +
-                "服务器地址: " + etServerIp.getText().toString() + "\n" +
-                "服务器端口: " + etServerPort.getText().toString()
-            )
-            .setPositiveButton("确定", (d, which) -> dismissCurrentDialog())
-            .setNegativeButton("清除上传进度", (d, which) -> {
+            .setTitle(getString(R.string.upload_troubleshooting_title))
+            .setMessage(getString(R.string.upload_troubleshooting_message, 
+                etServerIp.getText().toString(), 
+                etServerPort.getText().toString()))
+            .setPositiveButton(getString(R.string.ok), (d, which) -> dismissCurrentDialog())
+            .setNegativeButton(getString(R.string.clear_upload_progress), (d, which) -> {
                 networkManager.clearAllUploadProgress();
-                Toast.makeText(MainActivity.this, "已清除所有上传进度记录", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, getString(R.string.clear_upload_progress_records), Toast.LENGTH_SHORT).show();
                 dismissCurrentDialog();
             })
             .setOnCancelListener(d -> dismissCurrentDialog())
@@ -766,13 +759,13 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
      */
     private String formatDuration(long milliseconds) {
         if (milliseconds < 1000) {
-            return milliseconds + "毫秒";
+            return getString(R.string.time_milliseconds, milliseconds);
         } else if (milliseconds < 60 * 1000) {
-            return String.format("%.1f秒", milliseconds / 1000.0);
+            return getString(R.string.time_seconds, milliseconds / 1000.0);
         } else {
             long minutes = milliseconds / (60 * 1000);
             long seconds = (milliseconds % (60 * 1000)) / 1000;
-            return minutes + "分" + seconds + "秒";
+            return getString(R.string.time_minutes_seconds, minutes, seconds);
         }
     }
     
@@ -786,7 +779,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
         // 检查是否有未上传文件
         List<File> filesToUpload = storageManager.getUnuploadedFiles();
         if (filesToUpload.isEmpty()) {
-            Toast.makeText(this, "没有文件需要上传", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.no_files_to_upload), Toast.LENGTH_SHORT).show();
             return;
         }
         
@@ -795,15 +788,14 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
         
         // 显示确认对话框
         AlertDialog dialog = new AlertDialog.Builder(this)
-            .setTitle("上传确认")
-            .setMessage("准备上传 " + filesToUpload.size() + " 个文件，总计约 " + 
-                       totalSizeKB + " KB (" + formatFileSize(totalSizeKB * 1024) + ")\n\n" +
-                       "服务器: " + ip + ":" + port)
-            .setPositiveButton("开始上传", (d, which) -> {
+            .setTitle(getString(R.string.upload_confirmation_title))
+            .setMessage(getString(R.string.upload_confirmation_message_formatted, filesToUpload.size(), totalSizeKB, 
+                       formatFileSize(totalSizeKB * 1024), ip, port))
+            .setPositiveButton(getString(R.string.start_upload), (d, which) -> {
                 startFileUpload(filesToUpload, ip, port);
                 dismissCurrentDialog();
             })
-            .setNegativeButton("取消", (d, which) -> dismissCurrentDialog())
+            .setNegativeButton(getString(R.string.cancel), (d, which) -> dismissCurrentDialog())
             .setOnCancelListener(d -> dismissCurrentDialog())
             .show();
         currentDialog = dialog;
@@ -825,27 +817,27 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
      */
     private void showUploadAdvancedOptions() {
         String[] options = {
-            "清除上传进度记录",
-            "取消正在进行的上传",
-            "查看未上传文件列表",
-            "查看所有数据文件",
-            "测试服务器连接"
+            getString(R.string.clear_upload_progress_option),
+            getString(R.string.cancel_ongoing_uploads),
+            getString(R.string.view_unuploaded_files),
+            getString(R.string.view_all_data_files),
+            getString(R.string.test_server_connection)
         };
         
         AlertDialog dialog = new AlertDialog.Builder(this)
-            .setTitle("上传高级选项")
+            .setTitle(getString(R.string.upload_advanced_options_title))
             .setItems(options, (d, which) -> {
                 switch (which) {
                     case 0: // 清除上传进度记录
                         networkManager.clearAllUploadProgress();
-                        Toast.makeText(MainActivity.this, "已清除所有上传进度记录", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, getString(R.string.clear_upload_progress_records), Toast.LENGTH_SHORT).show();
                         break;
                     case 1: // 取消正在进行的上传
                         if (networkManager.isUploading()) {
                             networkManager.cancelAllUploads();
-                            Toast.makeText(MainActivity.this, "已取消所有上传任务", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, getString(R.string.cancel_all_upload_tasks), Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(MainActivity.this, "当前没有正在进行的上传任务", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, getString(R.string.no_upload_tasks_in_progress), Toast.LENGTH_SHORT).show();
                         }
                         break;
                     case 2: // 查看未上传文件列表
@@ -860,7 +852,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                 }
                 dismissCurrentDialog();
             })
-            .setNegativeButton("取消", (d,which) -> dismissCurrentDialog())
+            .setNegativeButton(getString(R.string.cancel), (d,which) -> dismissCurrentDialog())
             .setOnCancelListener(d -> dismissCurrentDialog())
             .show();
         currentDialog = dialog;
@@ -872,12 +864,12 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
     private void showUnuploadedFilesList() {
         List<File> files = storageManager.getUnuploadedFiles();
         if (files.isEmpty()) {
-            Toast.makeText(this, "没有未上传的文件", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.no_unuploaded_files), Toast.LENGTH_SHORT).show();
             return;
         }
         
         StringBuilder sb = new StringBuilder();
-        sb.append("共 ").append(files.size()).append(" 个未上传文件:\n\n");
+        sb.append(getString(R.string.unuploaded_files_count, files.size()));
         
         for (int i = 0; i < files.size(); i++) {
             File file = files.get(i);
@@ -887,15 +879,15 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
             
             // 限制显示数量，避免对话框过长
             if (i >= 19 && files.size() > 20) {
-                sb.append("...以及 ").append(files.size() - 20).append(" 个其他文件");
+                sb.append(getString(R.string.including_other_files, files.size() - 20));
                 break;
             }
         }
         
         AlertDialog dialog = new AlertDialog.Builder(this)
-            .setTitle("未上传文件列表")
+            .setTitle(getString(R.string.unuploaded_files_list_title))
             .setMessage(sb.toString())
-            .setPositiveButton("确定", (d, which) -> dismissCurrentDialog())
+            .setPositiveButton(getString(R.string.confirm_button), (d, which) -> dismissCurrentDialog())
             .setOnCancelListener(d -> dismissCurrentDialog())
             .show();
         currentDialog = dialog;
@@ -906,8 +898,8 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
      */
     private void openFileManagerToViewFiles() {
         if (backgroundTaskExecutor == null || backgroundTaskExecutor.isShutdown()) {
-            Log.w(TAG, "BackgroundTaskExecutor 未初始化或已关闭，无法查看文件。");
-            Toast.makeText(this, "无法查看文件，请稍后重试", Toast.LENGTH_SHORT).show();
+            Log.w(TAG, getString(R.string.backgroundtask_not_initialized));
+            Toast.makeText(this, getString(R.string.cannot_view_files), Toast.LENGTH_SHORT).show();
             return;
         }
         
@@ -917,7 +909,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                 File storageDir = getFilesDir();
                 
                 if (!storageDir.exists() || !storageDir.isDirectory()) {
-                    runOnUiThread(() -> Toast.makeText(this, "数据文件目录不存在", Toast.LENGTH_SHORT).show());
+                    runOnUiThread(() -> Toast.makeText(this, getString(R.string.data_directory_not_exist), Toast.LENGTH_SHORT).show());
                     return;
                 }
                 
@@ -927,7 +919,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                     (name.endsWith(".jsonl") || name.endsWith(".jsonl.gz")));
                 
                 if (dataFiles == null || dataFiles.length == 0) {
-                    runOnUiThread(() -> Toast.makeText(this, "没有找到任何数据文件", Toast.LENGTH_SHORT).show());
+                    runOnUiThread(() -> Toast.makeText(this, getString(R.string.no_data_files_found_message), Toast.LENGTH_SHORT).show());
                     return;
                 }
                 
@@ -937,9 +929,9 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                 runOnUiThread(() -> showFileSelectionDialog(dataFiles));
                 
             } catch (Exception e) {
-                Log.e(TAG, "获取文件列表失败", e);
+                Log.e(TAG, getString(R.string.file_list_failed), e);
                 runOnUiThread(() -> {
-                    Toast.makeText(this, "获取文件列表失败: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.get_file_list_failed, e.getMessage()), Toast.LENGTH_SHORT).show();
                     showAllDataFilesList(); // 备用方案
                 });
             }
@@ -951,7 +943,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
      */
     private void showFileSelectionDialog(File[] dataFiles) {
         if (dataFiles == null || dataFiles.length == 0) {
-            Toast.makeText(this, "没有可查看的文件", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.no_viewable_files_message), Toast.LENGTH_SHORT).show();
             return;
         }
         
@@ -967,12 +959,12 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
         }
         
         AlertDialog dialog = new AlertDialog.Builder(this)
-            .setTitle("选择要查看的文件")
+            .setTitle(getString(R.string.select_file_to_view_title))
             .setItems(fileNames, (d, which) -> {
                 dismissCurrentDialog();
                 showFileContentDialog(dataFiles[which]);
             })
-            .setNegativeButton("取消", (d, which) -> dismissCurrentDialog())
+            .setNegativeButton(getString(R.string.cancel), (d, which) -> dismissCurrentDialog())
             .setOnCancelListener(d -> dismissCurrentDialog())
             .show();
         currentDialog = dialog;
@@ -983,14 +975,14 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
      */
     private void showFileContentDialog(File file) {
         if (backgroundTaskExecutor == null || backgroundTaskExecutor.isShutdown()) {
-            Toast.makeText(this, "无法读取文件，请稍后重试", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.cannot_read_file), Toast.LENGTH_SHORT).show();
             return;
         }
         
         // 显示加载对话框
         AlertDialog loadingDialog = new AlertDialog.Builder(this)
-            .setTitle("读取文件")
-            .setMessage("正在读取文件内容，请稍候...")
+            .setTitle(getString(R.string.read_file_title))
+            .setMessage(getString(R.string.reading_file_content))
             .setCancelable(false)
             .create();
         loadingDialog.show();
@@ -1008,12 +1000,12 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                 });
                 
             } catch (Exception e) {
-                Log.e(TAG, "读取文件内容失败: " + file.getName(), e);
+                Log.e(TAG, getString(R.string.file_read_failed, file.getName()), e);
                 runOnUiThread(() -> {
                     if (loadingDialog.isShowing()) {
                         loadingDialog.dismiss();
                     }
-                    Toast.makeText(this, "读取文件失败: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.read_file_failed, e.getMessage()), Toast.LENGTH_SHORT).show();
                 });
             }
         });
@@ -1030,7 +1022,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
         
         // 文件信息
         TextView fileInfo = new TextView(this);
-        fileInfo.setText(String.format("文件: %s\n大小: %s\n修改时间: %s", 
+        fileInfo.setText(getString(R.string.file_info_format, 
             file.getName(),
             formatFileSize(file.length()),
             new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date(file.lastModified()))));
@@ -1057,10 +1049,10 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
         layout.addView(scrollView);
         
         AlertDialog dialog = new AlertDialog.Builder(this)
-            .setTitle("文件内容")
+            .setTitle(getString(R.string.file_content_title))
             .setView(layout)
-            .setPositiveButton("关闭", (d, which) -> dismissCurrentDialog())
-            .setNeutralButton("导出", (d, which) -> {
+            .setPositiveButton(getString(R.string.close_button), (d, which) -> dismissCurrentDialog())
+            .setNeutralButton(getString(R.string.export_button), (d, which) -> {
                 dismissCurrentDialog();
                 exportFileContent(file, content);
             })
@@ -1102,11 +1094,11 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
         }
         
         if (lineCount >= maxLines) {
-            content.append("\n... (文件内容过长，仅显示前").append(maxLines).append("行)");
+            content.append(getString(R.string.file_content_too_long, maxLines));
         }
         
         if (content.length() == 0) {
-            return "文件为空或无法读取内容";
+            return getString(R.string.file_empty_or_unreadable);
         }
         
         return content.toString();
@@ -1133,11 +1125,11 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                 writer.write(content);
             }
             
-            Toast.makeText(this, "文件已导出到: " + exportFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.file_exported_success, exportFile.getAbsolutePath()), Toast.LENGTH_LONG).show();
             
         } catch (Exception e) {
-            Log.e(TAG, "导出文件失败", e);
-            Toast.makeText(this, "导出失败: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e(TAG, getString(R.string.export_file_failed), e);
+            Toast.makeText(this, getString(R.string.export_failed, e.getMessage()), Toast.LENGTH_SHORT).show();
         }
     }
     
@@ -1146,8 +1138,8 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
      */
     private void showAllDataFilesList() {
         if (backgroundTaskExecutor == null || backgroundTaskExecutor.isShutdown()) { // 安全检查
-            Log.w(TAG, "BackgroundTaskExecutor 未初始化或已关闭，无法获取文件列表。");
-            runOnUiThread(() -> Toast.makeText(MainActivity.this, "无法获取文件列表，请稍后重试", Toast.LENGTH_SHORT).show());
+            Log.w(TAG, getString(R.string.backgroundtask_not_initialized));
+            runOnUiThread(() -> Toast.makeText(MainActivity.this, getString(R.string.cannot_get_file_list), Toast.LENGTH_SHORT).show());
             return;
         }
         backgroundTaskExecutor.submit(() -> {
@@ -1155,28 +1147,28 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
             
             runOnUiThread(() -> {
                 if (fileInfoList.isEmpty()) {
-                    Toast.makeText(this, "没有任何数据文件", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.no_data_files), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 
                 StringBuilder sb = new StringBuilder();
-                sb.append("共 ").append(fileInfoList.size()).append(" 个数据文件:\n\n");
+                sb.append(getString(R.string.total_data_files, fileInfoList.size()));
                 
                 for (int i = 0; i < fileInfoList.size(); i++) {
                     sb.append(i + 1).append(". ").append(fileInfoList.get(i)).append("\n");
                     
                     // 限制显示数量，避免对话框过长
                     if (i >= 19 && fileInfoList.size() > 20) {
-                        sb.append("...以及 ").append(fileInfoList.size() - 20).append(" 个其他文件");
+                        sb.append(getString(R.string.including_other_files, fileInfoList.size() - 20));
                         break;
                     }
                 }
                 
                 AlertDialog dialog = new AlertDialog.Builder(this)
-                    .setTitle("所有数据文件")
+                    .setTitle(getString(R.string.all_data_files_title))
                     .setMessage(sb.toString())
-                    .setPositiveButton("确定", (d, which) -> dismissCurrentDialog())
-                    .setNeutralButton("清理旧文件", (d, which) -> {
+                    .setPositiveButton(getString(R.string.confirm_button), (d, which) -> dismissCurrentDialog())
+                    .setNeutralButton(getString(R.string.clean_old_files), (d, which) -> {
                         btnKeepRecentFiles.performClick();
                         dismissCurrentDialog();
                     })
@@ -1195,14 +1187,14 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
         String port = etServerPort.getText().toString().trim();
         
         if (ip.isEmpty() || port.isEmpty()) {
-            Toast.makeText(this, "请输入服务器IP和端口", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.please_enter_server_ip_port), Toast.LENGTH_SHORT).show();
             return;
         }
         
         // 使用新的非阻塞式对话框，而不是过时的 ProgressDialog
         AlertDialog progressDialog = new AlertDialog.Builder(this)
-            .setTitle("连接测试")
-            .setMessage("正在测试服务器连接...")
+            .setTitle(getString(R.string.connection_test_title))
+            .setMessage(getString(R.string.testing_server_connection))
             .setCancelable(false)
             .create();
         currentDialog = progressDialog; // 保持
@@ -1227,7 +1219,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                     if (progressDialog != null && progressDialog.isShowing()) { // 安全关闭对话框
                         progressDialog.dismiss();
                     }
-                    Toast.makeText(MainActivity.this, "服务器连接成功！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getString(R.string.server_connection_successful), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -1244,9 +1236,9 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                         progressDialog.dismiss();
                     }
                     AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("服务器连接失败")
-                        .setMessage("无法连接到服务器: " + ip + ":" + port + "\n\n错误信息: " + errorMessage)
-                        .setPositiveButton("确定", (d,which) -> dismissCurrentDialog())
+                        .setTitle(getString(R.string.server_connection_failed_title))
+                        .setMessage(getString(R.string.server_connection_failed_message, ip, port, errorMessage))
+                        .setPositiveButton(getString(R.string.ok), (d,which) -> dismissCurrentDialog())
                         .setOnCancelListener(d -> dismissCurrentDialog())
                         .show();
                     currentDialog = dialog;
@@ -1263,7 +1255,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                 Log.w(TAG, "BackgroundTaskExecutor 未初始化或已关闭，无法测试连接。");
                 runOnUiThread(() -> {
                     if (currentDialog != null && currentDialog.isShowing()) currentDialog.dismiss(); // progressDialog 就是 currentDialog
-                    Toast.makeText(MainActivity.this, "操作无法执行，请稍后重试", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getString(R.string.operation_cannot_execute), Toast.LENGTH_SHORT).show();
                 });
                 return;
             }
@@ -1277,15 +1269,15 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                     isConnected = socket.isConnected();
                     socket.close();
                 } catch (java.net.UnknownHostException e) {
-                    errorMessage = "无法解析服务器地址: " + e.getMessage();
+                    errorMessage = getString(R.string.error_resolve_server_address, e.getMessage());
                 } catch (java.net.ConnectException e) {
-                    errorMessage = "连接被拒绝，服务器可能未启动: " + e.getMessage();
+                    errorMessage = getString(R.string.error_connection_refused, e.getMessage());
                 } catch (java.net.SocketTimeoutException e) {
-                    errorMessage = "连接超时: " + e.getMessage();
+                    errorMessage = getString(R.string.error_connection_timeout, e.getMessage());
                 } catch (java.io.IOException e) {
-                    errorMessage = "连接错误: " + e.getMessage();
+                    errorMessage = getString(R.string.error_connection_error, e.getMessage());
                 } catch (Exception e) {
-                    errorMessage = "未知错误: " + e.getMessage();
+                    errorMessage = getString(R.string.error_unknown, e.getMessage());
                 }
                 
                 final boolean finalIsConnected = isConnected;
@@ -1295,12 +1287,12 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                     progressDialog.dismiss();
                     
                     if (finalIsConnected) {
-                        Toast.makeText(MainActivity.this, "服务器连接成功！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, getString(R.string.server_connection_success), Toast.LENGTH_SHORT).show();
                     } else {
                         AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
-                            .setTitle("服务器连接失败")
-                            .setMessage("无法连接到服务器: " + ip + ":" + port + "\n\n错误信息: " + finalErrorMessage)
-                            .setPositiveButton("确定", (d,which) -> dismissCurrentDialog())
+                            .setTitle(getString(R.string.server_connection_failed_title))
+                            .setMessage(getString(R.string.server_connection_failed_message, ip, port, finalErrorMessage))
+                            .setPositiveButton(getString(R.string.ok), (d,which) -> dismissCurrentDialog())
                             .setOnCancelListener(d -> dismissCurrentDialog())
                             .show();
                         currentDialog = dialog;
@@ -1321,9 +1313,9 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                 return true;
             }
         } catch (SecurityException e) {
-            Log.w(TAG, "NetworkManager 检查网络状态时权限不足: " + e.getMessage());
+            Log.w(TAG, getString(R.string.network_manager_permission_insufficient, e.getMessage()));
         } catch (Exception e) {
-            Log.w(TAG, "NetworkManager 检查网络状态失败: " + e.getMessage());
+            Log.w(TAG, getString(R.string.network_manager_check_failed, e.getMessage()));
         }
         
         // 作为备用方案，使用更安全的实现
@@ -1348,7 +1340,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                             capabilities.hasTransport(android.net.NetworkCapabilities.TRANSPORT_CELLULAR) ||
                             capabilities.hasTransport(android.net.NetworkCapabilities.TRANSPORT_ETHERNET));
                 } catch (SecurityException e) {
-                    Log.w(TAG, "检查网络状态时权限不足，使用备用方法: " + e.getMessage());
+                    Log.w(TAG, getString(R.string.network_status_permission_backup, e.getMessage()));
                     // 降级到旧版本API
                     android.net.NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
                     return activeNetworkInfo != null && activeNetworkInfo.isConnected();
@@ -1359,11 +1351,11 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                 return activeNetworkInfo != null && activeNetworkInfo.isConnected();
             }
         } catch (SecurityException e) {
-            Log.e(TAG, "检查网络状态时权限不足: " + e.getMessage());
+            Log.e(TAG, getString(R.string.network_status_permission_general, e.getMessage()));
             // 如果权限不足，假设网络可用，让上传尝试进行
             return true;
         } catch (Exception e) {
-            Log.e(TAG, "检查网络状态时发生异常: " + e.getMessage());
+            Log.e(TAG, getString(R.string.network_status_exception_general, e.getMessage()));
             // 发生异常时，假设网络可用
             return true;
         }
@@ -1384,7 +1376,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
         
         // 然后绑定服务
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-        Log.d(TAG, "绑定传感器服务");
+        Log.d(TAG, getString(R.string.bind_sensor_service));
     }
     
     /**
@@ -1398,11 +1390,11 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                 try {
                     samplingRate = Integer.parseInt(etSamplingRate.getSelectedItem().toString());
                 } catch (NumberFormatException e) {
-                    Log.e(TAG, "自动启动收集时，无效的采样率格式，使用默认值10ms: " + etSamplingRate.getSelectedItem().toString(), e);
+                    Log.e(TAG, getString(R.string.invalid_sampling_rate_auto_start_log, etSamplingRate.getSelectedItem().toString()), e);
                     samplingRate = 10; // Fallback to default
                 }
             } else {
-                Log.w(TAG, "自动启动收集时，采样率Spinner或选中项为空，使用默认值10ms");
+                Log.w(TAG, getString(R.string.sampling_rate_empty_auto_start_log));
                 samplingRate = 10; // Fallback to default
             }
             
@@ -1417,7 +1409,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
             
             // 更新UI
             updateServiceStatus();
-            Log.i(TAG, "自动启动数据收集，采样率: " + samplingRate + "ms");
+            Log.i(TAG, getString(R.string.auto_start_data_collection, samplingRate));
         }
     }
     
@@ -1430,7 +1422,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
             public void run() {
                 // 检查Activity是否还存活且可见，以及屏幕是否开启
                 if (isDestroyed() || isFinishing() || !isActivityVisible || !isScreenOn) {
-                    Log.d(TAG, "Activity已销毁、不可见或屏幕关闭，停止UI更新Runnable");
+                    Log.d(TAG, getString(R.string.activity_destroyed_stop_ui));
                     return; 
                 }
                 
@@ -1440,15 +1432,13 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                     updateFileInfo();
                     updateBatteryInfo();
                 } catch (Exception e) {
-                    Log.e(TAG, "UI更新出错", e);
+                    Log.e(TAG, getString(R.string.ui_update_error), e);
                 } finally {
                     // 只有在Activity仍然可见且屏幕开启时才继续调度
                     if (!isDestroyed() && !isFinishing() && isActivityVisible && isScreenOn) {
                         uiUpdateHandler.postDelayed(this, UI_UPDATE_INTERVAL_MS);
                     } else {
-                        Log.d(TAG, "停止UI更新调度 - Activity状态: destroyed=" + isDestroyed() + 
-                              ", finishing=" + isFinishing() + ", visible=" + isActivityVisible + 
-                              ", screenOn=" + isScreenOn);
+                        Log.d(TAG, getString(R.string.stop_ui_update_status, isDestroyed(), isActivityVisible, isScreenOn));
                     }
                 }
             }
@@ -1465,7 +1455,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
         if (uiUpdateRunnable != null) {
              uiUpdateHandler.post(uiUpdateRunnable);
         }
-        Log.d(TAG, "UI更新任务已启动");
+        Log.d(TAG, getString(R.string.ui_update_task_started));
     }
     
     /**
@@ -1475,7 +1465,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
         if (uiUpdateRunnable != null) {
             uiUpdateHandler.removeCallbacks(uiUpdateRunnable);
         }
-        Log.d(TAG, "UI更新任务已停止");
+        Log.d(TAG, getString(R.string.ui_update_task_stopped));
     }
     
     /**
@@ -1495,15 +1485,15 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
         String currentTime = sdf.format(new Date());
         
         if (isRecording) {
-            tvStatus.setText("状态: 正在运行 (数据写入中) (" + currentTime + ")");
+            tvStatus.setText(getString(R.string.status_running_with_time, currentTime));
             btnStart.setEnabled(false);
             btnStop.setEnabled(true);
         } else if (isMonitoringOnly) {
-            tvStatus.setText("状态: 正在监控 (未写入文件) (" + currentTime + ")");
+            tvStatus.setText(getString(R.string.status_monitoring_with_time, currentTime));
             btnStart.setEnabled(true);
             btnStop.setEnabled(false);
         } else {
-            tvStatus.setText("状态: 未运行 (" + currentTime + ")");
+            tvStatus.setText(getString(R.string.status_stopped_with_time, currentTime));
             btnStart.setEnabled(true);
             btnStop.setEnabled(false);
         }
@@ -1530,18 +1520,18 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
      */
     private void updateForegroundAppInfo() {
         if (foregroundAppManager == null) {
-            Log.w(TAG, "ForegroundAppManager为空，跳过更新");
+            Log.w(TAG, getString(R.string.foreground_app_manager_null));
             return;
         }
         
         if (backgroundTaskExecutor == null || backgroundTaskExecutor.isShutdown()) {
-            Log.w(TAG, "BackgroundTaskExecutor不可用，跳过前台应用信息更新");
+            Log.w(TAG, getString(R.string.background_executor_unavailable));
             return;
         }
         
         // 如果Activity不可见，跳过更新以避免后台帧事件
         if (!isActivityVisible) {
-            Log.v(TAG, "Activity不可见，跳过前台应用信息更新");
+            Log.v(TAG, getString(R.string.activity_invisible_skip_update));
             return;
         }
         
@@ -1549,28 +1539,28 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
             // 使用backgroundTaskExecutor避免内存泄漏
             backgroundTaskExecutor.submit(() -> {
                 try {
-                    Log.d(TAG, "开始获取前台应用信息");
+                    Log.d(TAG, getString(R.string.start_get_foreground_app));
                     
                     // 获取前台应用信息
                     ForegroundAppManager.ForegroundAppInfo appInfo = foregroundAppManager.getForegroundAppInfo();
-                    Log.d(TAG, "获取前台应用信息成功: " + appInfo.toString());
+                    Log.d(TAG, getString(R.string.get_foreground_app_success, appInfo.toString()));
                     
                     // 获取最近应用列表（固定10个）
                     List<ForegroundAppManager.RecentAppInfo> recentApps = foregroundAppManager.getRecentApps(10);
-                    Log.d(TAG, "获取最近应用列表成功，数量: " + recentApps.size());
+                    Log.d(TAG, getString(R.string.get_recent_apps_success, recentApps.size()));
                     
                     // 在主线程更新UI
                     runOnUiThread(() -> {
                         try {
                             // 检查Activity是否还存活
                             if (isDestroyed() || isFinishing()) {
-                                Log.d(TAG, "Activity已销毁，跳过UI更新");
+                                Log.d(TAG, getString(R.string.activity_destroyed_skip_ui_update));
                                 return;
                             }
                             
                             // 更新前台应用显示
                             if (tvForegroundApp != null) {
-                                String appText = "前台应用: " + appInfo.toString();
+                                String appText = getString(R.string.foreground_app_text, appInfo.toString());
                                 tvForegroundApp.setText(appText);
                             }
                             
@@ -1583,15 +1573,15 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                                 btnPermission.setVisibility(hasPermission ? View.GONE : View.VISIBLE);
                             }
                             
-                            Log.d(TAG, "前台应用UI更新完成");
+                            Log.d(TAG, getString(R.string.foreground_app_ui_update_complete));
                             
                         } catch (Exception e) {
-                            Log.e(TAG, "在主线程更新前台应用UI时出错", e);
+                            Log.e(TAG, getString(R.string.main_thread_update_foreground_app_error), e);
                         }
                     });
                     
                 } catch (Exception e) {
-                    Log.e(TAG, "获取前台应用信息时出错", e);
+                    Log.e(TAG, getString(R.string.get_foreground_app_error), e);
                     
                     // 在主线程显示错误信息
                     runOnUiThread(() -> {
@@ -1599,7 +1589,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                             return;
                         }
                         if (tvForegroundApp != null) {
-                            tvForegroundApp.setText("前台应用: 获取失败 - " + e.getMessage());
+                            tvForegroundApp.setText(getString(R.string.foreground_app_failed, e.getMessage()));
                         }
                         updateRecentAppsList(new ArrayList<>()); // 显示空列表
                     });
@@ -1607,7 +1597,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
             });
             
         } catch (Exception e) {
-            Log.e(TAG, "启动前台应用信息更新任务失败", e);
+            Log.e(TAG, getString(R.string.start_foreground_app_update_failed), e);
         }
     }
     
@@ -1635,10 +1625,10 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                     recyclerRecentApps.scrollToPosition(0);
                 }
                 
-                Log.d(TAG, "更新最近应用列表，包含 " + recentApps.size() + " 个应用");
+                Log.d(TAG, getString(R.string.update_recent_apps_list, recentApps.size()));
             }
         } catch (Exception e) {
-            Log.e(TAG, "更新最近应用列表时出错", e);
+            Log.e(TAG, getString(R.string.update_recent_apps_error), e);
         }
     }
     
@@ -1650,7 +1640,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
             tvFilePath.setText(storageManager.getDataFilePath());
             int fileCount = storageManager.getUnuploadedFilesCount();
             long totalSizeKB = storageManager.getUnuploadedFilesTotalSizeKB();
-            tvPendingFiles.setText(fileCount + "个文件 (" + totalSizeKB + " KB)");
+            tvPendingFiles.setText(getString(R.string.files_text, fileCount, totalSizeKB));
             tvLastUploadTime.setText(storageManager.getLastUploadTimeString());
             if (tvStorageSize != null) {
                 tvStorageSize.setText(totalSizeKB + " KB");
@@ -1686,11 +1676,11 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
-                Toast.makeText(this, "权限已授权", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.permissions_granted), Toast.LENGTH_SHORT).show();
                 // 权限已授权，绑定服务
                 bindSensorService();
             } else {
-                Toast.makeText(this, "需要权限才能正常运行", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.permissions_required), Toast.LENGTH_LONG).show();
                 finish(); // 如果权限是必要的，则关闭应用
             }
         }
@@ -1888,13 +1878,13 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                     dataRecord.sensorX, dataRecord.sensorY, dataRecord.sensorZ, commonSuffix);
                 switch (dataRecord.sensorName) {
                     case "accelerometer":
-                        if (tvAccelerometerData != null) tvAccelerometerData.setText("加速度: " + sensorDataStr);
+                        if (tvAccelerometerData != null) tvAccelerometerData.setText(getString(R.string.sensor_accelerometer_prefix, sensorDataStr));
                         break;
                     case "magnetometer":
-                        if (tvMagnetometerData != null) tvMagnetometerData.setText("磁力: " + sensorDataStr);
+                        if (tvMagnetometerData != null) tvMagnetometerData.setText(getString(R.string.sensor_magnetometer_prefix, sensorDataStr));
                         break;
                     case "gyroscope":
-                        if (tvGyroscopeData != null) tvGyroscopeData.setText("陀螺仪: " + sensorDataStr);
+                        if (tvGyroscopeData != null) tvGyroscopeData.setText(getString(R.string.sensor_gyroscope_prefix, sensorDataStr));
                         break;
                 }
             }
@@ -2025,7 +2015,7 @@ public class MainActivity extends AppCompatActivity implements DataManager.DataR
                     }
                 } else {
                     if (holder.text1 != null) {
-                        holder.text1.setText("应用信息获取失败");
+                        holder.text1.setText(getString(R.string.app_info_unavailable));
                         holder.text1.setTextColor(0xFF999999);
                     }
                     if (holder.text2 != null) {

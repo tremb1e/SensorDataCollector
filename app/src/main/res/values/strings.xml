@@ -1,4 +1,427 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">传感器数据收集器</string>
-</resources> 
+    <!-- App Info -->
+    <string name="app_name">Sensor Data Collector</string>
+    
+    <!-- Status Messages -->
+    <string name="service_not_connected">Service not connected, please try again later</string>
+    <string name="status_running">Status: Running (Writing data)</string>
+    <string name="status_stopped">Status: Not running</string>
+    <string name="status_collecting">Status: Collecting</string>
+    <string name="status_idle">Status: Idle</string>
+    <string name="status_running_with_time">Status: Running (Writing data) (%s)</string>
+    <string name="status_monitoring_with_time">Status: Monitoring (Not writing files) (%s)</string>
+    <string name="status_stopped_with_time">Status: Not running (%s)</string>
+    
+    <!-- UI Labels -->
+    <string name="sensor_data_collection">Sensor Data Collection</string>
+    <string name="accelerometer">Accelerometer</string>
+    <string name="magnetometer">Magnetometer</string>
+    <string name="gyroscope">Gyroscope</string>
+    <string name="no_data">No data</string>
+    <string name="current_file">Current file: %s</string>
+    <string name="file_path">File path: %s</string>
+    <string name="foreground_app">Foreground app: %s</string>
+    <string name="battery_level">Battery level: %d%%</string>
+    <string name="storage_size">Storage size: %s</string>
+    <string name="pending_files">Pending files: %d</string>
+    <string name="last_upload_time">Last upload: %s</string>
+    <string name="upload_progress">Upload progress: %s</string>
+    
+    <!-- Input Fields -->
+    <string name="ip_address">IP Address</string>
+    <string name="port">Port</string>
+    <string name="user_id">User ID</string>
+    <string name="sampling_rate">Sampling Rate</string>
+    <string name="enter_ip_address">Enter IP address</string>
+    <string name="enter_port">Enter port</string>
+    <string name="enter_user_id">Enter user ID</string>
+    
+    <!-- Buttons -->
+    <string name="start_service">Start</string>
+    <string name="stop_service">Stop</string>
+    <string name="upload_files">Upload</string>
+    <string name="clean_files">Clean Files</string>
+    <string name="keep_recent_files">Keep Recent</string>
+    <string name="view_files">View Files</string>
+    <string name="request_permissions">Request Permissions</string>
+    <string name="go_authorize">Go Authorize</string>
+    <string name="later">Later</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="retry">Retry</string>
+    <string name="view_details">View Details</string>
+    <string name="clear_upload_progress">Clear Upload Progress</string>
+    <string name="start_upload">Start Upload</string>
+    <string name="test_button">test</string>
+    
+    <!-- Toast Messages -->
+    <string name="please_enter_server_info">Please enter server IP and port</string>
+    <string name="invalid_ip_format">Invalid IP address format</string>
+    <string name="port_out_of_range">Port number must be between 1-65535</string>
+    <string name="port_must_be_number">Port number must be a number</string>
+    <string name="server_connection_success">Server connection successful!</string>
+    <string name="operation_failed_retry">Operation failed, please try again later</string>
+    <string name="no_files_to_upload">No files to upload</string>
+    <string name="upload_in_progress">Upload task is already in progress</string>
+    <string name="no_unuploaded_files">No unuploaded files</string>
+    <string name="cannot_view_files">Cannot view files, please try again later</string>
+    <string name="data_directory_not_exist">Data file directory does not exist</string>
+    <string name="no_data_files_found">No data files found</string>
+    <string name="no_viewable_files">No viewable files</string>
+    <string name="cannot_read_file">Cannot read file, please try again later</string>
+    <string name="file_exported_to">File exported to: %s</string>
+    <string name="export_failed">Export failed: %s</string>
+    <string name="cannot_get_file_list">Cannot get file list, please try again later</string>
+    <string name="no_data_files">No data files</string>
+    <string name="permissions_granted">Permissions granted</string>
+    <string name="permissions_required">Permissions required for normal operation</string>
+    <string name="clear_upload_progress_records">Clear all upload progress records</string>
+    <string name="cancel_all_upload_tasks">Cancel all upload tasks</string>
+    <string name="no_upload_tasks_in_progress">No upload tasks in progress</string>
+    <string name="timestamp_alignment_test_complete">Timestamp alignment test complete, please check logs</string>
+    <string name="cleanup_failed">Cleanup failed: %s</string>
+    <string name="organize_failed">Organize failed: %s</string>
+    <string name="get_file_list_failed">Get file list failed: %s</string>
+    <string name="read_file_failed">Read file failed: %s</string>
+    
+    <!-- Dialog Messages -->
+    <string name="usage_stats_permission_title">Usage Statistics Permission Required</string>
+    <string name="usage_stats_permission_message">To get foreground app names, usage statistics permission is needed.\n\nPlease find this app in the settings page and enable "Allow viewing usage data" permission.</string>
+    <string name="file_cleanup_confirm">Confirm file cleanup?</string>
+    
+    <!-- Snackbar Messages -->
+    <string name="start_recording_sensors">Started recording sensor data, sampling rate: %dms</string>
+    <string name="data_collection_stopped">Data collection stopped</string>
+    
+    <!-- Service and Notifications -->
+    <string name="notification_channel_name">Sensor Service Channel</string>
+    <string name="notification_title">Sensor Service</string>
+    <string name="notification_text">Collecting sensor data</string>
+    <string name="service_started">Service started</string>
+    <string name="service_stopped">Service stopped</string>
+    <string name="notification_channel_description">Shows the status of the sensor data collection service</string>
+    <string name="notification_service_paused">Service paused (Screen Off)</string>
+    <string name="notification_collecting_data">Collecting sensor data</string>
+    <string name="notification_monitoring_data">Monitoring sensor data (Not Saving)</string>
+    
+    <!-- Error Messages -->
+    <string name="error_creating_directory">Error creating directory: %s</string>
+    <string name="file_saved">File saved: %s</string>
+    <string name="error_saving_file">Error saving file: %s</string>
+    <string name="no_network_connection">No network connection</string>
+    <string name="error_connecting_to_server">Error connecting to server: %s</string>
+    <string name="error_uploading_file">Error uploading file: %s</string>
+    <string name="file_upload_progress">Uploading file %s (%d/%d)</string>
+    <string name="all_files_uploaded">All files uploaded</string>
+    <string name="upload_successful">Upload successful</string>
+    <string name="upload_failed">Upload failed</string>
+    
+    <!-- Permissions -->
+    <string name="no_storage_permission">No storage permission</string>
+    <string name="no_battery_stats_permission">No battery stats permission</string>
+    <string name="no_usage_stats_permission">No usage stats permission</string>
+    
+    <!-- File Management -->
+    <string name="files_deleted">Files deleted</string>
+    <string name="no_files_to_delete">No files to delete</string>
+    
+    <!-- Recent Apps -->
+    <string name="recent_apps">Recent Apps</string>
+    
+    <!-- Data Labels -->
+    <string name="x_axis">X: %s</string>
+    <string name="y_axis">Y: %s</string>
+    <string name="z_axis">Z: %s</string>
+    
+    <!-- Additional Labels -->
+    <string name="foreground_app_info">Foreground App Info</string>
+    <string name="control_panel">Control Panel</string>
+    <string name="file_management">File Management</string>
+    <string name="server_settings">Server Settings</string>
+    <string name="sampling_rate_hint">Smaller values increase data accuracy but consume more power</string>
+    <string name="sampling_rate_label">Sampling Rate (milliseconds)</string>
+    <string name="battery_stats_unavailable">Battery statistics not yet available</string>
+    <string name="storage_path">Storage path: </string>
+    <string name="unknown">Unknown</string>
+    <string name="unuploaded_files">Unuploaded files: </string>
+    <string name="files_count">%d files</string>
+    <string name="zero_files">0 files</string>
+    <string name="storage_size_label">Storage size: </string>
+    <string name="zero_kb">0 KB</string>
+    <string name="last_upload_time_label">Last upload time: </string>
+    <string name="never_uploaded">Never uploaded</string>
+    <string name="current_file_none">Current file: None</string>
+    <string name="upload_data_files">Upload Data Files</string>
+    <string name="ready">Ready</string>
+    
+    <!-- Network Dialog -->
+    <string name="network_connection_warning">Network Connection Warning</string>
+    <string name="network_connection_warning_message">No network connection available, upload may fail. Do you want to continue?</string>
+    <string name="continue_text">Continue</string>
+    
+    <!-- File Management Dialog -->
+    <string name="confirm_cleanup_files">Confirm File Cleanup</string>
+    <string name="cleanup_files_message">This operation will delete all sensor data files (except the currently writing file).\n\nAre you sure you want to continue?</string>
+    <string name="files_cleanup_complete">File cleanup complete, deleted %d files</string>
+    <string name="files_organized_complete">File organization complete, kept %d recent files</string>
+    <string name="confirm_keep_recent_files">Confirm Keep Recent Files</string>
+    <string name="keep_recent_files_message">This operation will keep the 10 most recent sensor data files and delete all others.\n\nAre you sure you want to continue?</string>
+    <string name="files_organized_deleted_complete">File organization complete, kept 10 recent files, deleted %d old files</string>
+    
+    <!-- Upload Dialog -->
+    <string name="upload_confirmation">Upload Confirmation</string>
+    <string name="upload_confirmation_message">Ready to upload %1$d files, total approximately %2$d KB (%3$s)\n\nServer: %4$s:%5$s\nContinue?</string>
+    <string name="preparing_upload_files">Preparing to upload %d files...</string>
+    <string name="upload_started_log">Started uploading %1$d files, total size: %2$s to server: %3$s:%4$s</string>
+    <string name="upload_failed_error">Upload failed: %s</string>
+    <string name="upload_progress_percent">Upload progress: %d%%</string>
+    <string name="foreground_app_failed">Foreground app: Failed to get - %s</string>
+    <string name="file_info_format">File: %1$s\nSize: %2$s\nModified: %3$s</string>
+    
+    <!-- Additional Toast Messages -->
+    <string name="backgroundtask_not_initialized">Background task executor not initialized</string>
+    
+    <!-- Dialog Titles -->
+    <string name="upload_failed_title">Upload Failed</string>
+    <string name="upload_troubleshooting_title">Upload Troubleshooting</string>
+    <string name="upload_confirmation_title">Upload Confirmation</string>
+    <string name="upload_advanced_options_title">Upload Advanced Options</string>
+    <string name="unuploaded_files_list_title">Unuploaded Files List</string>
+    <string name="select_file_to_view_title">Select File to View</string>
+    <string name="read_file_title">Read File</string>
+    <string name="file_content_title">File Content</string>
+    <string name="all_data_files_title">All Data Files</string>
+    <string name="connection_test_title">Connection Test</string>
+    <string name="server_connection_failed_title">Server Connection Failed</string>
+    
+    <!-- Upload Dialog Messages -->
+    <string name="upload_troubleshooting_message">Check the following items:\n\n1. Network connection is stable\n2. Server address and port are correct\n3. Server is running and accessible\n4. Check file permissions\n5. If using WiFi, ensure stable connection\n\nServer address: %1$s\nServer port: %2$s</string>
+    
+    <!-- File List Messages -->
+    <string name="unuploaded_files_count">Total %d unuploaded files:\n\n</string>
+    
+    <!-- Data Directory -->
+    <string name="data_directory_not_exist_message">Data file directory does not exist</string>
+    
+    <!-- Buttons -->
+    <string name="battery_stats_unavailable_text">Battery statistics not yet available</string>
+    <string name="file_management_text">File Management</string>
+    <string name="storage_path_text">Storage path: </string>
+    
+    <!-- Server Connection Messages -->
+    <string name="server_connection_failed_message">Unable to connect to server: %1$s:%2$s\n\nError message: %3$s</string>
+    
+    <!-- Battery Manager Strings -->
+    <string name="log_memory_callback_registered">Memory callback registered</string>
+    <string name="log_battery_stats_monitoring_started">Battery stats monitoring started</string>
+    <string name="log_error_starting_battery_stats_monitoring">Error starting battery stats monitoring</string>
+    <string name="log_error_updating_stats">Error updating stats</string>
+    <string name="log_permission_denied_accessing_performance_data">Permission denied accessing performance data</string>
+    <string name="log_error_updating_performance_stats">Error updating performance stats</string>
+    <string name="log_permission_denied_getting_memory_info">Permission denied getting memory info</string>
+    <string name="log_error_getting_memory_info">Error getting memory info</string>
+    <string name="charging_type_ac">AC Power</string>
+    <string name="charging_type_usb">USB</string>
+    <string name="charging_type_wireless">Wireless</string>
+    <string name="charging_type_not_charging">Not Charging</string>
+    <string name="formatted_running_time">%1$d hours %2$d minutes</string>
+    <string name="battery_info_current_level">Current level: %d%%</string>
+    <string name="battery_info_usage">Usage: %d%%</string>
+    <string name="battery_info_running_time">Running time: %s</string>
+    <string name="battery_info_temperature">Temperature: %s</string>
+    <string name="battery_info_peak_temperature"> (Peak: %s</string>
+    <string name="battery_info_charging_status">Charging: %s</string>
+    <string name="charging_status_charging">%s</string>
+    <string name="charging_status_not_charging">Not charging</string>
+    <string name="battery_info_memory_usage">Memory: %s MB</string>
+    <string name="log_low_memory_critical">Critical memory situation</string>
+    <string name="log_battery_stats_task_paused">Battery stats task paused</string>
+    <string name="log_low_memory_moderate">Moderate memory situation</string>
+    <string name="log_low_memory_low">Low memory situation</string>
+    <string name="log_system_low_memory_critical">System critical low memory</string>
+    <string name="log_memory_callback_unregistered">Memory callback unregistered</string>
+    
+    <!-- Additional UI Strings -->
+    <string name="sensor_name_accelerometer">Accelerometer</string>
+    <string name="sensor_name_magnetometer">Magnetometer</string>
+    <string name="sensor_name_gyroscope">Gyroscope</string>
+    <string name="time_ago_just_now">Just now</string>
+    <string name="time_ago_minutes">%d minutes ago</string>
+    <string name="time_ago_hours">%d hours ago</string>
+    <string name="time_ago_days">%d days ago</string>
+    <string name="files_count_single">%d file</string>
+    <string name="server_ip_port_label">Server IP Address, Port</string>
+    <string name="stop_recording_sensors">Stopped recording sensor data</string>
+    <string name="upload_failed_duration">Upload failed (Duration: %s)</string>
+    <string name="upload_progress_detailed">Upload progress: %1$d%% (%2$d/%3$d files)</string>
+    <string name="estimated_remaining">Estimated remaining: %s</string>
+    <string name="duration_milliseconds">%dms</string>
+    <string name="duration_seconds">%.1fs</string>
+    <string name="duration_minutes_seconds">%1$dm%2$ds</string>
+    <string name="upload_confirmation_detailed">Ready to upload %1$d files, total approximately %2$d KB (%3$s)\n\nServer: %4$s:%5$s</string>
+    <string name="clear_upload_progress_option">Clear upload progress records</string>
+    <string name="cancel_ongoing_uploads">Cancel ongoing uploads</string>
+    <string name="view_unuploaded_files">View unuploaded files list</string>
+    <string name="view_all_data_files">View all data files</string>
+    <string name="test_server_connection">Test server connection</string>
+    <string name="including_other_files">...and %d other files</string>
+    <string name="confirm_button">Confirm</string>
+    <string name="no_data_files_found_message">No data files found</string>
+    <string name="file_list_failed">Failed to get file list</string>
+    <string name="file_read_failed">Failed to read file: %s</string>
+    <string name="no_viewable_files_message">No viewable files</string>
+    <string name="reading_file_content">Reading file content, please wait...</string>
+    <string name="close_button">Close</string>
+    <string name="export_button">Export</string>
+    <string name="file_content_too_long">... (File content too long, showing first %d lines only)</string>
+    <string name="file_empty_or_unreadable">File is empty or unreadable</string>
+    <string name="file_exported_success">File exported to: %s</string>
+    <string name="export_file_failed">Export failed</string>
+    <string name="total_data_files">Total %d data files:\n\n</string>
+    <string name="clean_old_files">Clean old files</string>
+    <string name="please_enter_server_ip_port">Please enter server IP and port</string>
+    <string name="testing_server_connection">Testing server connection...</string>
+    <string name="server_connection_successful">Server connection successful!</string>
+    <string name="operation_cannot_execute">Operation cannot be executed, please try again later</string>
+    <string name="error_resolve_server_address">Unable to resolve server address: %s</string>
+    <string name="error_connection_refused">Connection refused, server may not be running: %s</string>
+    <string name="error_connection_timeout">Connection timeout: %s</string>
+    <string name="error_connection_error">Connection error: %s</string>
+    <string name="error_unknown">Unknown error: %s</string>
+    <string name="permission_insufficient_network">Insufficient permission checking network status: %s</string>
+    <string name="network_status_check_failed">Network status check failed: %s</string>
+    <string name="connectivity_manager_unavailable">ConnectivityManager unavailable</string>
+    <string name="permission_insufficient_backup">Insufficient permission checking network status, using backup method: %s</string>
+    <string name="permission_insufficient_general">Insufficient permission checking network status: %s</string>
+    <string name="network_status_exception">Exception occurred checking network status: %s</string>
+    <string name="bind_sensor_service">Binding sensor service</string>
+    <string name="invalid_sampling_rate_startup">Invalid sampling rate format during startup, using default 10ms: %s</string>
+    <string name="sampling_rate_empty_startup">Sampling rate Spinner or selection empty during startup, using default 10ms</string>
+    <string name="auto_start_data_collection">Auto-starting data collection, sampling rate: %dms</string>
+    <string name="activity_destroyed_stop_ui">Activity destroyed, invisible, or screen off, stopping UI update Runnable</string>
+    <string name="ui_update_error">UI update error</string>
+    <string name="stop_ui_update_status">Stop UI update scheduling - Activity status: destroyed=%1$b, visible=%2$b, screenOn=%3$b</string>
+    <string name="ui_update_task_started">UI update task started</string>
+    <string name="ui_update_task_stopped">UI update task stopped</string>
+    <string name="foreground_app_manager_null">ForegroundAppManager is null, skipping update</string>
+    <string name="background_executor_unavailable">BackgroundTaskExecutor unavailable, skipping foreground app info update</string>
+    <string name="activity_invisible_skip_update">Activity invisible, skipping foreground app info update</string>
+    <string name="start_get_foreground_app">Start getting foreground app info</string>
+    <string name="get_foreground_app_success">Get foreground app info success: %s</string>
+    <string name="get_recent_apps_success">Get recent apps list success, count: %d</string>
+    <string name="activity_destroyed_skip_ui_update">Activity destroyed, skipping UI update</string>
+    <string name="foreground_app_text">Foreground app: %s</string>
+    <string name="foreground_app_ui_update_complete">Foreground app UI update complete</string>
+    <string name="main_thread_update_foreground_app_error">Error updating foreground app UI on main thread</string>
+    <string name="get_foreground_app_error">Error getting foreground app info</string>
+    <string name="start_foreground_app_update_failed">Failed to start foreground app info update task</string>
+    <string name="update_recent_apps_list">Update recent apps list, containing %d apps</string>
+    <string name="unknown_app">Unknown App</string>
+    <string name="need_usage_stats_permission">Need usage statistics permission</string>
+    <string name="system_app">System App</string>
+    <string name="sensor_data_collector_app">Sensor Data Collector</string>
+    <string name="invalid_sampling_rate_default">Invalid sampling rate format, using default 10ms: %s</string>
+    <string name="sampling_rate_empty_default">Sampling rate Spinner or selection empty, using default 10ms</string>
+    <string name="timestamp_alignment_test_start">Starting timestamp alignment test</string>
+    <string name="cleanup_files_failed">Cleanup files failed</string>
+    <string name="organize_files_failed">Organize files failed</string>
+    <string name="start_upload_files">Starting to upload %1$d files, total size: %2$s to server: %3$s:%4$s</string>
+    <string name="upload_success_with_count">Successfully uploaded %d files</string>
+    <string name="upload_start_queue_processing">Starting upload queue processing, total %d files</string>
+    <string name="file_not_exist_or_empty">File does not exist or is empty: %s</string>
+    <string name="prepare_upload_file">Preparing to upload file %1$d/%2$d: %3$s (%4$s)</string>
+    <string name="retry_upload_file">Retrying file upload (%1$d/%2$d): %3$s</string>
+    <string name="upload_interrupted">Upload process interrupted: %s</string>
+    <string name="upload_cancelled">Upload cancelled: %s</string>
+    <string name="upload_file_io_exception">Upload file IO exception</string>
+    <string name="upload_timeout_retry">Upload timeout, preparing to retry</string>
+    <string name="server_connection_failed_retry">Server connection failed, preparing to retry</string>
+    <string name="server_address_resolve_failed_retry">Failed to resolve server address, preparing to retry</string>
+    <string name="network_connection_error_retry">Network connection error, preparing to retry</string>
+    <string name="protocol_error_retry">Protocol error, preparing to retry</string>
+    <string name="stream_unexpected_end_clear_progress">Detected unexpected stream end, clearing resume progress: %s</string>
+    <string name="data_stream_unexpected_end_retry">Data stream unexpected end, preparing to retry</string>
+    <string name="upload_file_unexpected_error">Unexpected error during file upload: %s</string>
+    <string name="file_upload_successful">File upload successful %1$d/%2$d: %3$s</string>
+    <string name="upload_file_failed_max_retries">Upload file failed, maximum retries reached: %s</string>
+    <string name="upload_file_process_exception">Exception during file upload process: %s</string>
+    <string name="upload_failed_with_filename">Upload %1$s failed: %2$s</string>
+    <string name="upload_success_total_files">Successfully uploaded %d files</string>
+    <string name="all_files_upload_success_total">All files uploaded successfully, total: %d</string>
+    
+    <!-- Additional hardcoded strings -->
+    <string name="sensor_accelerometer_label">Accelerometer: %s</string>
+    <string name="sensor_magnetometer_label">Magnetometer: %s</string>
+    <string name="sensor_gyroscope_label">Gyroscope: %s</string>
+    <string name="foreground_app_label">Foreground app: %s</string>
+    <string name="upload_success_message">Upload successful: %1$s (Duration: %2$s)</string>
+    <string name="upload_failed_message">Upload failed (Duration: %s)</string>
+    <string name="upload_progress_format">Upload progress: %1$d%% (%2$d/%3$d files)</string>
+    <string name="estimated_remaining_time">Estimated remaining: %s</string>
+    <string name="time_milliseconds">%d milliseconds</string>
+    <string name="time_seconds">%.1f seconds</string>
+    <string name="time_minutes_seconds">%1$d minutes %2$d seconds</string>
+    <string name="upload_confirmation_message_formatted">Preparing to upload %1$d files, total approximately %2$s KB (%3$s)\n\nServer: %4$s:%5$s</string>
+    <string name="server_label">Server: %1$s:%2$s</string>
+    <string name="stop_data_recording">Stop data recording</string>
+    <string name="invalid_sampling_rate_format_log">Invalid sampling rate format when starting collection, using default 10ms: %s</string>
+    <string name="sampling_rate_spinner_empty_log">Sampling rate Spinner or selected item is empty when starting collection, using default 10ms</string>
+    
+    <!-- Error log messages -->
+    <string name="invalid_sampling_rate_auto_start_log">Invalid sampling rate format during auto-start collection, using default 10ms: %s</string>
+    <string name="sampling_rate_empty_auto_start_log">Sampling rate Spinner or selected item is empty during auto-start collection, using default 10ms</string>
+    
+    <!-- File size units -->
+    <string name="file_size_bytes">%d B</string>
+    <string name="file_size_kb">%.2f KB</string>
+    <string name="file_size_mb">%.2f MB</string>
+    <string name="file_size_gb">%.2f GB</string>
+    
+    <!-- Status messages with time -->
+    <string name="status_running_time_format">Status: Running (Writing data) (%s)</string>
+    <string name="status_monitoring_time_format">Status: Monitoring (Not writing files) (%s)</string>
+    <string name="status_stopped_time_format">Status: Not running (%s)</string>
+    
+    <!-- Long time format -->
+    <string name="hour_ago">%d hour ago</string>
+    <string name="minutes_ago">%d minutes ago</string>
+    <string name="just_now">Just now</string>
+    
+    <!-- File count -->
+    <string name="file_count">%d files</string>
+    <string name="single_file">1 file</string>
+    
+    <!-- Additional strings for hardcoded text replacement -->
+    <string name="dialog_cancel">Cancel</string>
+    <string name="never_uploaded_text">Never uploaded</string>
+    <string name="files_text">%d files (%d KB)</string>
+    <string name="app_info_unavailable">App info unavailable</string>
+    <string name="from_never_uploaded">Never uploaded</string>
+    <string name="error_invalid_server_info">Invalid server IP or port</string>
+    <string name="upload_success_count_log">Successfully uploaded %d files</string>
+    <string name="all_files_upload_success_log">All files uploaded successfully, total: %d</string>
+    <string name="server_connection_test_success">Server connection test successful: %1$d %2$s</string>
+    <string name="server_connection_success_response">Server connection successful: %s</string>
+    <string name="server_error_status_code">Server returned error status code: %1$d %2$s</string>
+    
+    <!-- Sensor data display prefixes -->
+    <string name="sensor_accelerometer_prefix">Accelerometer: %s</string>
+    <string name="sensor_magnetometer_prefix">Magnetometer: %s</string>
+    <string name="sensor_gyroscope_prefix">Gyroscope: %s</string>
+    
+    <!-- Network status check log messages -->
+    <string name="network_manager_permission_insufficient">NetworkManager insufficient permission checking network status: %s</string>
+    <string name="network_manager_check_failed">NetworkManager network status check failed: %s</string>
+    <string name="network_status_permission_backup">Insufficient permission checking network status, using backup method: %s</string>
+    <string name="network_status_permission_general">Insufficient permission checking network status: %s</string>
+    <string name="network_status_exception_general">Exception occurred checking network status: %s</string>
+    <string name="permission_insufficient_assume_available">If permission insufficient, assume network available for upload attempt</string>
+    <string name="update_recent_apps_error">Error updating recent apps list</string>
+    
+    <!-- Input hint texts -->
+    <string name="server_ip_hint">Server IP Address</string>
+    <string name="server_port_hint">Port</string>
+    
+</resources>
