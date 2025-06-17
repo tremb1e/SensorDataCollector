@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 采样率选项数组 -->
+    <string-array name="sampling_rates">
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+        <item>50</item>
+        <item>100</item>
+        <item>200</item>
+        <item>500</item>
+        <item>1000</item>
+    </string-array>
+</resources> 

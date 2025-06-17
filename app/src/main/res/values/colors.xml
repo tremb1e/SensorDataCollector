@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <!-- 应用主题颜色 -->
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    
+    <!-- 卡片颜色 -->
+    <color name="card_background">#FFFFFF</color>
+    <color name="card_border">#E0E0E0</color>
+    
+    <!-- 文本颜色 -->
+    <color name="title_text">#212121</color>
+    <color name="data_text">#757575</color>
+    <color name="hint_text">#9E9E9E</color>
+    
+    <!-- 状态指示器颜色 -->
+    <color name="status_active">#4CAF50</color>  <!-- 绿色：活动状态 -->
+    <color name="status_inactive">#F44336</color> <!-- 红色：非活动状态 -->
+    <color name="status_warning">#FFC107</color>  <!-- 黄色：警告状态 -->
+    
+    <!-- 按钮颜色 -->
+    <color name="button_start">#4CAF50</color>  <!-- 绿色：开始按钮 -->
+    <color name="button_stop">#F44336</color>   <!-- 红色：停止按钮 -->
+    <color name="button_upload">#2196F3</color> <!-- 蓝色：上传按钮 -->
+    
+    <!-- 背景颜色 -->
+    <color name="background_light">#F5F5F5</color>
+    <color name="background_dark">#E0E0E0</color>
+</resources>

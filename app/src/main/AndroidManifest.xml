@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- 网络权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 网络状态权限 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 前台服务权限（Android 9+ 需要） -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- Android 14+ 前台服务数据同步权限 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <!-- 启动时自动启动权限 -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- 防止休眠权限 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- 获取使用情况统计权限（获取前台应用名称） -->
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions" />
+
+    <!-- Declare features for sensors. required="true" means the app won't be installed
+         if the device doesn't have the sensor. Set to false if the feature is optional. -->
+    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true" />
+    <uses-feature android:name="android.hardware.sensor.gyroscope" android:required="true" />
+    <uses-feature android:name="android.hardware.sensor.compass" android:required="true" />
+
+    <!-- 查询其他应用包信息的声明，替代QUERY_ALL_PACKAGES权限 -->
+    <queries>
+        <!-- 允许查询所有已安装的应用，用于获取应用名称 -->
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+        </intent>
+    </queries>
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.SensorDataCollector"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <!-- 前台服务 -->
+        <service
+            android:name=".SensorService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+            
+        <!-- 开机广播接收器（可选，用于在设备启动时自动启动服务） -->
+        <receiver
+            android:name=".BootCompletedReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <data android:scheme="package" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

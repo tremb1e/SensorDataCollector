@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 状态指示器样式 -->
+    <style name="StatusIndicator">
+        <item name="android:layout_width">12dp</item>
+        <item name="android:layout_height">12dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:background">@drawable/status_indicator</item>
+    </style>
+
+    <!-- 卡片样式 -->
+    <style name="SensorCard">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:elevation">4dp</item>
+        <item name="cardCornerRadius">8dp</item>
+        <item name="cardBackgroundColor">@color/card_background</item>
+    </style>
+
+    <!-- 标题文本样式 -->
+    <style name="TitleText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/title_text</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 数据文本样式 -->
+    <style name="DataText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:textColor">@color/data_text</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    
+    <!-- 按钮样式 -->
+    <style name="ActionButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="backgroundTint">@color/colorPrimary</item>
+    </style>
+
+    <!-- 解决ScrollView中的Pinning警告 -->
+    <style name="ScrollViewFix">
+        <item name="android:overScrollMode">never</item>
+        <item name="android:fadingEdge">none</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:scrollbars">none</item>
+        <!-- 避免频繁进行内存分配和Pin操作 -->
+        <item name="android:scrollingCache">false</item>
+        <item name="android:smoothScrollbar">true</item>
+    </style>
+
+    <!-- 解决RecyclerView中的Pinning警告 -->
+    <style name="RecyclerViewFix">
+        <item name="android:overScrollMode">ifContentScrolls</item>
+        <item name="android:scrollbars">vertical</item>
+        <!-- 避免频繁进行内存分配和Pin操作 -->
+        <item name="android:scrollingCache">false</item>
+        <!-- 在Android Q及以上版本，设置以下属性可以帮助避免Pinning警告 -->
+        <item name="android:clipToPadding">false</item>
+        <!-- 确保可以滚动 -->
+        <item name="android:nestedScrollingEnabled">true</item>
+    </style>
+</resources>
